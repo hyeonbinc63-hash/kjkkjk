@@ -1,0 +1,3290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>LearnWorld – Kids Educational Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet"/>
+<style>
+/* ===== RESET & VARIABLES ===== */
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --primary:#FF6B6B;--primary-dark:#E84545;
+  --secondary:#4ECDC4;--secondary-dark:#3BADA5;
+  --accent:#FFE66D;--accent-dark:#F0C93A;
+  --purple:#A855F7;--purple-dark:#7E22CE;
+  --green:#10B981;--green-dark:#059669;
+  --blue:#3B82F6;--blue-dark:#1D4ED8;
+  --orange:#F97316;--orange-dark:#EA580C;
+  --bg:#FFF9F0;--card:#FFFFFF;
+  --text:#2D3748;--text-light:#718096;
+  --shadow:0 8px 32px rgba(0,0,0,.12);
+  --shadow-sm:0 4px 16px rgba(0,0,0,.08);
+  --radius:20px;--radius-lg:28px;--radius-sm:12px;
+  --font:'Nunito',sans-serif;--font-title:'Fredoka One',cursive;
+}
+body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
+button{cursor:pointer;font-family:var(--font);border:none;outline:none;}
+input{font-family:var(--font);outline:none;}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes popIn{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:scale(1)}}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+@keyframes wiggle{0%,100%{transform:rotate(0)}25%{transform:rotate(-5deg)}75%{transform:rotate(5deg)}}
+@keyframes float{0%,100%{transform:translateY(0)rotate(-2deg)}50%{transform:translateY(-8px)rotate(2deg)}}
+@keyframes confetti{0%{transform:translateY(-20px)rotate(0);opacity:1}100%{transform:translateY(100vh)rotate(720deg);opacity:0}}
+@keyframes slideIn{from{transform:translateX(-100%);opacity:0}to{transform:translateX(0);opacity:1}}
+@keyframes carMove{from{left:5%}to{left:80%}}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+@keyframes starBurst{0%{transform:scale(0)rotate(0);opacity:1}100%{transform:scale(2)rotate(180deg);opacity:0}}
+@keyframes planeAnim{0%{transform:translateX(-100px)translateY(20px)}50%{transform:translateX(50vw)translateY(-20px)}100%{transform:translateX(110vw)translateY(10px)}}
+
+/* ===== SCREEN SYSTEM ===== */
+.screen{display:none;min-height:100vh;animation:fadeIn .4s ease;}
+.screen.active{display:flex;flex-direction:column;}
+
+/* ===== LOGIN SCREEN ===== */
+#screen-login{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);align-items:center;justify-content:center;padding:20px;}
+.login-card{background:white;border-radius:var(--radius-lg);padding:40px;width:100%;max-width:420px;box-shadow:0 20px 60px rgba(0,0,0,.2);}
+.login-logo{text-align:center;margin-bottom:30px;}
+.login-logo .logo-icon{font-size:60px;animation:bounce 2s infinite;}
+.login-logo h1{font-family:var(--font-title);font-size:32px;color:var(--primary);margin-top:10px;}
+.login-logo p{color:var(--text-light);font-size:14px;margin-top:4px;}
+.form-group{margin-bottom:16px;}
+.form-group label{display:block;font-weight:700;font-size:13px;color:var(--text);margin-bottom:6px;}
+.form-group input{width:100%;padding:14px 18px;border:2.5px solid #E2E8F0;border-radius:var(--radius-sm);font-size:15px;transition:border-color .2s;background:#F7FAFC;}
+.form-group input:focus{border-color:var(--primary);}
+.btn-primary{width:100%;padding:16px;background:linear-gradient(135deg,var(--primary),var(--orange));color:white;border-radius:var(--radius-sm);font-size:16px;font-weight:800;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 15px rgba(255,107,107,.4);}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(255,107,107,.5);}
+.btn-primary:active{transform:translateY(0);}
+.login-divider{text-align:center;color:var(--text-light);font-size:13px;margin:12px 0;}
+.btn-guest{width:100%;padding:14px;background:#F7FAFC;color:var(--text);border-radius:var(--radius-sm);font-size:15px;font-weight:700;border:2px dashed #CBD5E0;}
+.btn-guest:hover{background:#EDF2F7;}
+
+/* ===== ONBOARDING ===== */
+#screen-onboard{background:linear-gradient(135deg,#f093fb 0%,#f5576c 100%);align-items:center;justify-content:center;padding:20px;}
+.onboard-card{background:white;border-radius:var(--radius-lg);padding:40px;width:100%;max-width:500px;box-shadow:0 20px 60px rgba(0,0,0,.2);}
+.teacher-char{text-align:center;margin-bottom:20px;}
+.teacher-char .teacher-emoji{font-size:80px;animation:bounce 2s infinite;}
+.teacher-bubble{background:linear-gradient(135deg,#667eea,#764ba2);color:white;border-radius:var(--radius);padding:16px 20px;font-size:16px;font-weight:700;text-align:center;margin-bottom:24px;position:relative;}
+.teacher-bubble::before{content:'▲';position:absolute;bottom:-18px;left:50%;transform:translateX(-50%);color:#667eea;font-size:22px;}
+.ob-title{font-family:var(--font-title);font-size:22px;color:var(--text);margin-bottom:16px;text-align:center;}
+.ob-options{display:grid;gap:10px;}
+.ob-options.grid2{grid-template-columns:1fr 1fr;}
+.ob-options.grid3{grid-template-columns:1fr 1fr 1fr;}
+.ob-option{padding:14px;border:3px solid #E2E8F0;border-radius:var(--radius-sm);font-size:15px;font-weight:700;background:white;transition:all .2s;text-align:center;}
+.ob-option:hover,.ob-option.selected{border-color:var(--primary);background:#FFF0F0;color:var(--primary);}
+.ob-option .ob-icon{font-size:28px;display:block;margin-bottom:4px;}
+.ob-progress{display:flex;gap:8px;margin-bottom:24px;justify-content:center;}
+.ob-dot{width:10px;height:10px;border-radius:50%;background:#E2E8F0;transition:background .3s;}
+.ob-dot.active{background:var(--primary);}
+.btn-next{width:100%;padding:16px;background:linear-gradient(135deg,var(--primary),var(--orange));color:white;border-radius:var(--radius-sm);font-size:16px;font-weight:800;margin-top:16px;transition:transform .2s;box-shadow:0 4px 15px rgba(255,107,107,.4);}
+.btn-next:hover{transform:translateY(-2px);}
+
+/* ===== MAIN APP SHELL ===== */
+#screen-app{background:var(--bg);flex-direction:column;min-height:100vh;}
+.app-header{background:white;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,.08);position:sticky;top:0;z-index:100;}
+.header-left{display:flex;align-items:center;gap:12px;}
+.header-pet{font-size:32px;cursor:pointer;transition:transform .2s;}
+.header-pet:hover{transform:scale(1.1);}
+.header-info .user-name{font-weight:800;font-size:15px;color:var(--text);}
+.header-info .user-level{font-size:12px;color:var(--text-light);font-weight:600;}
+.header-coins{display:flex;align-items:center;gap:6px;background:linear-gradient(135deg,#FFE66D,#F0C93A);padding:8px 14px;border-radius:50px;font-weight:800;font-size:14px;box-shadow:0 2px 8px rgba(240,201,58,.4);}
+.header-coins span{font-size:20px;}
+.bottom-nav{background:white;display:flex;border-top:2px solid #F0F0F0;position:fixed;bottom:0;left:0;right:0;z-index:100;}
+.nav-btn{flex:1;padding:10px 4px 12px;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10px;font-weight:700;color:var(--text-light);background:transparent;transition:color .2s;border-top:3px solid transparent;}
+.nav-btn .nav-icon{font-size:22px;}
+.nav-btn.active{color:var(--primary);border-top-color:var(--primary);}
+.app-content{flex:1;overflow-y:auto;padding:20px 16px 90px;}
+
+/* ===== HOME TAB ===== */
+.home-welcome{background:linear-gradient(135deg,#667eea,#764ba2);border-radius:var(--radius-lg);padding:24px;color:white;margin-bottom:20px;position:relative;overflow:hidden;}
+.home-welcome::after{content:'🌟';position:absolute;right:20px;top:-10px;font-size:80px;opacity:.3;animation:float 3s infinite;}
+.home-welcome h2{font-family:var(--font-title);font-size:26px;margin-bottom:4px;}
+.home-welcome p{opacity:.9;font-size:14px;}
+.xp-bar-wrap{margin-top:12px;background:rgba(255,255,255,.3);border-radius:50px;height:10px;}
+.xp-bar{height:100%;border-radius:50px;background:var(--accent);transition:width .5s;}
+.xp-label{font-size:12px;margin-top:4px;opacity:.9;}
+.section-title{font-family:var(--font-title);font-size:20px;color:var(--text);margin-bottom:12px;}
+.subject-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px;}
+.subject-card{background:white;border-radius:var(--radius);padding:18px;text-align:center;box-shadow:var(--shadow-sm);cursor:pointer;transition:transform .2s,box-shadow .2s;border:3px solid transparent;position:relative;overflow:hidden;}
+.subject-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:4px;border-radius:0 0 var(--radius) var(--radius);}
+.subject-card:hover{transform:translateY(-4px);box-shadow:var(--shadow);}
+.subject-card .card-icon{font-size:40px;margin-bottom:8px;display:block;}
+.subject-card .card-title{font-weight:800;font-size:14px;color:var(--text);}
+.subject-card .card-sub{font-size:11px;color:var(--text-light);margin-top:2px;}
+.subject-card.color-red::after{background:var(--primary);}
+.subject-card.color-blue::after{background:var(--blue);}
+.subject-card.color-green::after{background:var(--green);}
+.subject-card.color-purple::after{background:var(--purple);}
+.subject-card.color-orange::after{background:var(--orange);}
+.subject-card.color-teal::after{background:var(--secondary);}
+.medals-row{display:flex;gap:10px;overflow-x:auto;padding-bottom:8px;}
+.medal-badge{background:white;border-radius:var(--radius-sm);padding:12px 16px;text-align:center;min-width:80px;box-shadow:var(--shadow-sm);flex-shrink:0;}
+.medal-badge .medal-icon{font-size:28px;}
+.medal-badge .medal-name{font-size:10px;font-weight:700;color:var(--text-light);margin-top:2px;}
+.streak-card{background:linear-gradient(135deg,#FF6B6B,#FF8E53);border-radius:var(--radius);padding:16px 20px;color:white;display:flex;align-items:center;gap:16px;margin-bottom:20px;box-shadow:0 4px 20px rgba(255,107,107,.3);}
+.streak-card .streak-num{font-family:var(--font-title);font-size:48px;}
+.streak-card .streak-text h3{font-weight:800;font-size:16px;}
+.streak-card .streak-text p{font-size:13px;opacity:.9;}
+
+/* ===== CHARACTER / PET SCREEN ===== */
+.pet-stage{background:linear-gradient(180deg,#87CEEB 0%,#98D8C8 60%,#90EE90 100%);border-radius:var(--radius-lg);margin-bottom:20px;padding:30px;display:flex;flex-direction:column;align-items:center;min-height:280px;position:relative;overflow:hidden;}
+.pet-stage::before{content:'☀️';position:absolute;top:16px;right:24px;font-size:40px;animation:pulse 3s infinite;}
+.pet-display{position:relative;display:inline-block;margin-bottom:12px;}
+.pet-body{font-size:100px;line-height:1;display:block;animation:bounce 3s infinite;filter:drop-shadow(0 10px 20px rgba(0,0,0,.2));}
+.pet-accessory-hat{position:absolute;top:-24px;left:50%;transform:translateX(-50%);font-size:40px;}
+.pet-accessory-glasses{position:absolute;top:25px;left:50%;transform:translateX(-50%);font-size:30px;}
+.pet-accessory-clothes{position:absolute;bottom:-10px;left:50%;transform:translateX(-50%);font-size:36px;}
+.pet-name{font-family:var(--font-title);font-size:22px;color:white;text-shadow:0 2px 8px rgba(0,0,0,.3);}
+.pet-selector{display:flex;gap:10px;overflow-x:auto;padding:4px 0 10px;margin-bottom:16px;}
+.pet-option{background:white;border-radius:var(--radius-sm);padding:10px 14px;text-align:center;cursor:pointer;border:3px solid transparent;transition:all .2s;flex-shrink:0;}
+.pet-option.selected{border-color:var(--primary);background:#FFF0F0;}
+.pet-option .po-emoji{font-size:32px;display:block;}
+.pet-option .po-name{font-size:10px;font-weight:700;color:var(--text-light);margin-top:2px;}
+.customize-section{background:white;border-radius:var(--radius);padding:16px;margin-bottom:14px;box-shadow:var(--shadow-sm);}
+.customize-section h3{font-weight:800;font-size:15px;margin-bottom:12px;color:var(--text);}
+.acc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(60px,1fr));gap:8px;}
+.acc-item{background:#F7FAFC;border-radius:var(--radius-sm);padding:8px;text-align:center;cursor:pointer;border:2.5px solid transparent;transition:all .2s;}
+.acc-item:hover,.acc-item.selected{border-color:var(--primary);background:#FFF0F0;}
+.acc-item .acc-icon{font-size:26px;}
+.acc-item .acc-price{font-size:9px;font-weight:700;color:var(--text-light);}
+.acc-item.locked{opacity:.5;cursor:not-allowed;}
+.color-swatches{display:flex;gap:8px;flex-wrap:wrap;}
+.color-swatch{width:36px;height:36px;border-radius:50%;cursor:pointer;border:3px solid transparent;transition:transform .2s;}
+.color-swatch.selected,.color-swatch:hover{border-color:var(--text);transform:scale(1.15);}
+
+/* ===== VOCAB SCREEN ===== */
+.vocab-hero{background:linear-gradient(135deg,#4ECDC4,#44A08D);border-radius:var(--radius-lg);padding:24px;color:white;margin-bottom:20px;text-align:center;}
+.vocab-hero h2{font-family:var(--font-title);font-size:26px;}
+.vocab-hero p{opacity:.9;font-size:14px;margin-top:4px;}
+.level-tabs{display:flex;gap:8px;margin-bottom:20px;background:white;padding:6px;border-radius:50px;box-shadow:var(--shadow-sm);}
+.level-tab{flex:1;padding:10px;border-radius:50px;font-size:13px;font-weight:700;background:transparent;color:var(--text-light);transition:all .2s;}
+.level-tab.active{background:var(--primary);color:white;box-shadow:0 2px 10px rgba(255,107,107,.4);}
+.category-list{display:flex;flex-direction:column;gap:12px;}
+.category-card{background:white;border-radius:var(--radius);padding:16px 20px;display:flex;align-items:center;gap:16px;box-shadow:var(--shadow-sm);cursor:pointer;transition:transform .2s,box-shadow .2s;border-left:5px solid var(--primary);}
+.category-card:hover{transform:translateX(4px);box-shadow:var(--shadow);}
+.category-card .cat-icon{font-size:36px;flex-shrink:0;}
+.category-card .cat-info{flex:1;}
+.category-card .cat-name{font-weight:800;font-size:15px;color:var(--text);}
+.category-card .cat-sub{font-size:12px;color:var(--text-light);margin-top:2px;}
+.cat-progress{height:6px;background:#EDF2F7;border-radius:50px;margin-top:6px;}
+.cat-progress-fill{height:100%;border-radius:50px;background:var(--green);transition:width .5s;}
+.category-card .cat-arrow{font-size:20px;color:var(--text-light);}
+
+/* ===== FLASHCARD ===== */
+.flashcard-screen{padding:20px;display:flex;flex-direction:column;min-height:calc(100vh - 140px);}
+.fc-progress{background:white;border-radius:50px;height:10px;margin-bottom:20px;box-shadow:var(--shadow-sm);}
+.fc-progress-bar{height:100%;border-radius:50px;background:linear-gradient(90deg,var(--primary),var(--orange));transition:width .5s;}
+.flashcard-container{perspective:1000px;flex:1;display:flex;align-items:center;justify-content:center;margin-bottom:20px;}
+.flashcard{width:100%;max-width:380px;height:280px;position:relative;transform-style:preserve-3d;transition:transform .6s cubic-bezier(.175,.885,.32,1.275);cursor:pointer;}
+.flashcard.flipped{transform:rotateY(180deg);}
+.fc-front,.fc-back{position:absolute;inset:0;backface-visibility:hidden;border-radius:var(--radius-lg);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px;box-shadow:var(--shadow);}
+.fc-front{background:white;border:3px solid #F0F0F0;}
+.fc-back{background:linear-gradient(135deg,#667eea,#764ba2);color:white;transform:rotateY(180deg);}
+.fc-word-emoji{font-size:72px;margin-bottom:12px;animation:float 3s infinite;}
+.fc-word{font-family:var(--font-title);font-size:36px;color:var(--text);}
+.fc-hint{font-size:13px;color:var(--text-light);margin-top:8px;}
+.fc-meaning{font-family:var(--font-title);font-size:30px;color:white;}
+.fc-english{font-size:22px;opacity:.9;margin-top:6px;}
+.fc-example{font-size:13px;opacity:.8;margin-top:8px;text-align:center;}
+.speak-btn{background:rgba(255,255,255,.2);border:2px solid rgba(255,255,255,.5);color:white;padding:8px 16px;border-radius:50px;font-size:13px;font-weight:700;margin-top:12px;display:flex;align-items:center;gap:6px;}
+.speak-btn:hover{background:rgba(255,255,255,.3);}
+.fc-controls{display:flex;gap:12px;justify-content:center;align-items:center;}
+.fc-btn{padding:14px 28px;border-radius:50px;font-size:15px;font-weight:800;transition:transform .2s,box-shadow .2s;}
+.fc-btn:hover{transform:translateY(-2px);}
+.fc-btn-prev{background:#F0F0F0;color:var(--text);}
+.fc-btn-next{background:linear-gradient(135deg,var(--primary),var(--orange));color:white;box-shadow:0 4px 15px rgba(255,107,107,.4);}
+.fc-btn-quiz{background:linear-gradient(135deg,var(--purple),#7C3AED);color:white;padding:14px 32px;border-radius:50px;font-size:16px;font-weight:800;box-shadow:0 4px 15px rgba(168,85,247,.4);}
+.fc-counter{font-weight:800;font-size:15px;color:var(--text-light);}
+
+/* ===== QUIZ ===== */
+.quiz-header{background:white;padding:16px 20px;border-bottom:2px solid #F0F0F0;}
+.quiz-meta{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.quiz-score{font-weight:800;font-size:14px;color:var(--text);}
+.quiz-type-badge{background:var(--primary);color:white;padding:4px 12px;border-radius:50px;font-size:12px;font-weight:700;}
+.quiz-body{padding:20px;flex:1;}
+.quiz-question-card{background:white;border-radius:var(--radius-lg);padding:28px;text-align:center;margin-bottom:20px;box-shadow:var(--shadow-sm);}
+.quiz-question-emoji{font-size:72px;margin-bottom:12px;display:block;}
+.quiz-question-text{font-family:var(--font-title);font-size:24px;color:var(--text);}
+.quiz-question-sub{font-size:13px;color:var(--text-light);margin-top:6px;}
+.quiz-options{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;}
+.quiz-option{background:white;border:3px solid #E2E8F0;border-radius:var(--radius-sm);padding:16px 12px;font-size:14px;font-weight:700;color:var(--text);transition:all .2s;text-align:center;}
+.quiz-option:hover:not(:disabled){border-color:var(--primary);background:#FFF0F0;}
+.quiz-option.correct{border-color:var(--green);background:#ECFDF5;color:var(--green-dark);}
+.quiz-option.wrong{border-color:var(--primary);background:#FFF5F5;color:var(--primary-dark);animation:shake .4s;}
+.quiz-option:disabled{cursor:default;}
+.quiz-feedback{padding:16px 20px;border-radius:var(--radius);margin-bottom:16px;font-weight:700;font-size:15px;text-align:center;display:none;}
+.quiz-feedback.show{display:block;animation:popIn .3s ease;}
+.quiz-feedback.correct{background:#ECFDF5;color:var(--green-dark);}
+.quiz-feedback.wrong{background:#FFF5F5;color:var(--primary-dark);}
+.quiz-input{width:100%;padding:16px 20px;border:3px solid #E2E8F0;border-radius:var(--radius-sm);font-size:18px;font-weight:700;text-align:center;background:white;box-shadow:var(--shadow-sm);}
+.quiz-input:focus{border-color:var(--primary);}
+.quiz-submit-btn{width:100%;padding:16px;background:linear-gradient(135deg,var(--primary),var(--orange));color:white;border-radius:var(--radius-sm);font-size:16px;font-weight:800;margin-top:10px;box-shadow:0 4px 15px rgba(255,107,107,.4);}
+.matching-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.match-item{background:white;border:3px solid #E2E8F0;border-radius:var(--radius-sm);padding:14px;font-size:13px;font-weight:700;text-align:center;cursor:pointer;transition:all .2s;min-height:70px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:4px;}
+.match-item:hover{border-color:var(--secondary);}
+.match-item.selected{border-color:var(--primary);background:#FFF0F0;}
+.match-item.matched{border-color:var(--green);background:#ECFDF5;cursor:default;}
+.match-item.wrong-match{border-color:var(--primary);background:#FFF5F5;animation:shake .3s;}
+.match-item .match-emoji{font-size:28px;}
+
+/* CAR GAME */
+.car-game{background:white;border-radius:var(--radius-lg);padding:20px;box-shadow:var(--shadow-sm);margin-bottom:20px;}
+.car-road{background:linear-gradient(90deg,#4A5568,#2D3748);border-radius:var(--radius);height:80px;position:relative;overflow:hidden;margin-bottom:20px;}
+.car-road::before{content:'';position:absolute;top:50%;left:0;right:0;height:4px;background:repeating-linear-gradient(90deg,#FFD700 0,#FFD700 30px,transparent 30px,transparent 60px);animation:carMove 2s linear infinite;}
+.car-emoji{position:absolute;top:50%;transform:translateY(-50%);font-size:36px;transition:left .5s;z-index:2;}
+.car-finish{position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:30px;}
+.car-progress-text{font-weight:800;font-size:14px;color:var(--text);text-align:center;margin-bottom:12px;}
+.car-question{background:#F7FAFC;border-radius:var(--radius-sm);padding:16px;text-align:center;margin-bottom:14px;}
+.car-question .cq-emoji{font-size:48px;}
+.car-question .cq-word{font-family:var(--font-title);font-size:24px;color:var(--text);margin-top:6px;}
+
+/* QUIZ RESULT */
+.quiz-result{text-align:center;padding:30px 20px;}
+.result-medal{font-size:80px;animation:popIn .5s ease;display:block;margin-bottom:12px;}
+.result-title{font-family:var(--font-title);font-size:32px;color:var(--text);margin-bottom:8px;}
+.result-score{font-size:18px;color:var(--text-light);margin-bottom:20px;}
+.result-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:24px;}
+.result-stat{background:white;border-radius:var(--radius-sm);padding:14px;box-shadow:var(--shadow-sm);text-align:center;}
+.result-stat .rs-num{font-family:var(--font-title);font-size:28px;color:var(--primary);}
+.result-stat .rs-label{font-size:11px;color:var(--text-light);font-weight:700;}
+.result-btns{display:flex;gap:12px;flex-direction:column;}
+.btn-retry{background:linear-gradient(135deg,var(--orange),#F97316);color:white;padding:16px;border-radius:var(--radius-sm);font-size:16px;font-weight:800;box-shadow:0 4px 15px rgba(249,115,22,.4);}
+.btn-retry-wrong{background:linear-gradient(135deg,var(--purple),#7C3AED);color:white;padding:16px;border-radius:var(--radius-sm);font-size:16px;font-weight:800;box-shadow:0 4px 15px rgba(168,85,247,.4);}
+.btn-home-result{background:white;color:var(--text);padding:14px;border-radius:var(--radius-sm);font-size:15px;font-weight:700;border:2px solid #E2E8F0;}
+.wrong-answers-list{background:white;border-radius:var(--radius);padding:16px;text-align:left;margin-bottom:20px;box-shadow:var(--shadow-sm);}
+.wrong-answers-list h3{font-weight:800;font-size:14px;color:var(--text);margin-bottom:10px;}
+.wrong-answer-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #F0F0F0;font-size:13px;}
+.wrong-answer-item:last-child{border-bottom:none;}
+
+/* ===== FLAG LEARNING ===== */
+.world-map-container{background:white;border-radius:var(--radius-lg);padding:16px;margin-bottom:20px;box-shadow:var(--shadow-sm);}
+.continent-tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:8px;margin-bottom:16px;}
+.cont-tab{padding:8px 16px;border-radius:50px;font-size:12px;font-weight:700;background:#F7FAFC;color:var(--text-light);white-space:nowrap;transition:all .2s;border:2px solid transparent;}
+.cont-tab.active{background:var(--primary);color:white;border-color:var(--primary-dark);}
+.flags-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;}
+.flag-card{background:white;border-radius:var(--radius-sm);padding:14px;text-align:center;cursor:pointer;box-shadow:var(--shadow-sm);transition:transform .2s,box-shadow .2s;border:2px solid #F0F0F0;}
+.flag-card:hover{transform:translateY(-3px);box-shadow:var(--shadow);}
+.flag-card .flag-emoji{font-size:40px;display:block;margin-bottom:6px;}
+.flag-card .flag-name{font-weight:700;font-size:12px;color:var(--text);}
+.flag-card .flag-capital{font-size:10px;color:var(--text-light);margin-top:2px;}
+.flag-card.studied{border-color:var(--green);}
+.country-detail-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;display:flex;align-items:flex-end;justify-content:center;}
+.country-detail-card{background:white;border-radius:var(--radius-lg) var(--radius-lg) 0 0;padding:30px;width:100%;max-width:500px;animation:slideIn .3s ease;}
+.cdc-flag{font-size:80px;text-align:center;margin-bottom:12px;}
+.cdc-name{font-family:var(--font-title);font-size:28px;text-align:center;color:var(--text);}
+.cdc-info{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0;}
+.cdc-info-item{background:#F7FAFC;border-radius:var(--radius-sm);padding:12px;text-align:center;}
+.cdc-info-item .ci-label{font-size:11px;color:var(--text-light);font-weight:700;}
+.cdc-info-item .ci-value{font-size:15px;font-weight:800;color:var(--text);margin-top:2px;}
+.cdc-btns{display:flex;gap:10px;margin-top:16px;}
+.cdc-speak{flex:1;padding:14px;background:linear-gradient(135deg,var(--secondary),var(--secondary-dark));color:white;border-radius:var(--radius-sm);font-size:14px;font-weight:800;}
+.cdc-quiz{flex:1;padding:14px;background:linear-gradient(135deg,var(--primary),var(--orange));color:white;border-radius:var(--radius-sm);font-size:14px;font-weight:800;}
+.cdc-close{position:absolute;top:16px;right:20px;font-size:24px;background:none;border:none;cursor:pointer;color:var(--text-light);}
+
+/* ===== WORLD TOUR ===== */
+.world-tour-hero{background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460);border-radius:var(--radius-lg);padding:30px;color:white;text-align:center;margin-bottom:20px;position:relative;overflow:hidden;}
+.wt-globe{font-size:80px;animation:spin 10s linear infinite;display:block;margin:0 auto 12px;}
+.wt-title{font-family:var(--font-title);font-size:28px;margin-bottom:6px;}
+.wt-sub{font-size:14px;opacity:.8;}
+.wt-plane{font-size:40px;position:absolute;animation:planeAnim 6s ease-in-out infinite;top:50%;transform:translateY(-50%);}
+.continent-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.continent-card{border-radius:var(--radius);padding:20px;text-align:center;cursor:pointer;transition:transform .2s,box-shadow .2s;position:relative;overflow:hidden;}
+.continent-card:hover{transform:translateY(-4px);box-shadow:var(--shadow);}
+.continent-card .cc-icon{font-size:48px;margin-bottom:8px;display:block;}
+.continent-card .cc-name{font-family:var(--font-title);font-size:16px;color:white;}
+.continent-card .cc-count{font-size:12px;color:rgba(255,255,255,.8);margin-top:2px;}
+.continent-card .cc-progress{margin-top:8px;background:rgba(255,255,255,.3);border-radius:50px;height:6px;}
+.continent-card .cc-progress-fill{height:100%;border-radius:50px;background:white;transition:width .5s;}
+.continent-card.locked{filter:grayscale(.7);cursor:not-allowed;}
+.continent-card.locked::after{content:'🔒';position:absolute;top:10px;right:10px;font-size:18px;}
+.cc-asia{background:linear-gradient(135deg,#E07A5F,#C1440E);}
+.cc-europe{background:linear-gradient(135deg,#3D405B,#191C33);}
+.cc-americas{background:linear-gradient(135deg,#81B29A,#3D7A5A);}
+.cc-africa{background:linear-gradient(135deg,#F2CC8F,#C8941A);}
+.cc-oceania{background:linear-gradient(135deg,#5A78D1,#2A4BAA);}
+.cc-middleeast{background:linear-gradient(135deg,#DAA0D5,#8B4A89);}
+
+/* ===== SEARCH ===== */
+.search-bar{background:white;border-radius:50px;padding:14px 20px;display:flex;align-items:center;gap:12px;margin-bottom:20px;box-shadow:var(--shadow-sm);}
+.search-bar input{flex:1;border:none;font-size:15px;background:transparent;color:var(--text);}
+.search-bar .search-icon{font-size:20px;}
+.search-results{display:flex;flex-direction:column;gap:10px;}
+.search-result-item{background:white;border-radius:var(--radius-sm);padding:14px 16px;display:flex;align-items:center;gap:14px;box-shadow:var(--shadow-sm);cursor:pointer;transition:transform .2s;}
+.search-result-item:hover{transform:translateX(4px);}
+
+/* ===== PROFILE TAB ===== */
+.profile-hero{background:linear-gradient(135deg,#667eea,#764ba2);border-radius:var(--radius-lg);padding:28px;color:white;text-align:center;margin-bottom:20px;position:relative;}
+.profile-pet{font-size:80px;margin-bottom:8px;filter:drop-shadow(0 8px 16px rgba(0,0,0,.3));animation:bounce 3s infinite;}
+.profile-name{font-family:var(--font-title);font-size:28px;}
+.profile-level{font-size:14px;opacity:.9;margin-top:4px;}
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;}
+.stat-card{background:white;border-radius:var(--radius);padding:18px;text-align:center;box-shadow:var(--shadow-sm);}
+.stat-card .sc-icon{font-size:32px;margin-bottom:6px;}
+.stat-card .sc-value{font-family:var(--font-title);font-size:28px;color:var(--text);}
+.stat-card .sc-label{font-size:12px;color:var(--text-light);font-weight:700;margin-top:2px;}
+.achievements-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px;}
+.achievement{background:white;border-radius:var(--radius-sm);padding:12px;text-align:center;box-shadow:var(--shadow-sm);}
+.achievement .ach-icon{font-size:32px;margin-bottom:4px;}
+.achievement .ach-name{font-size:10px;font-weight:700;color:var(--text-light);}
+.achievement.locked{opacity:.4;filter:grayscale(1);}
+
+/* ===== CONFETTI ===== */
+.confetti-piece{position:fixed;width:10px;height:10px;top:-20px;border-radius:2px;animation:confetti 3s ease forwards;pointer-events:none;z-index:999;}
+
+/* ===== OVERLAYS ===== */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:500;display:flex;align-items:center;justify-content:center;padding:20px;animation:fadeIn .2s ease;}
+.overlay-card{background:white;border-radius:var(--radius-lg);padding:30px;width:100%;max-width:400px;box-shadow:0 20px 60px rgba(0,0,0,.3);animation:popIn .3s ease;}
+.overlay-card h2{font-family:var(--font-title);font-size:24px;color:var(--text);margin-bottom:12px;text-align:center;}
+.overlay-card p{color:var(--text-light);font-size:14px;text-align:center;line-height:1.6;margin-bottom:20px;}
+
+/* ===== MISC ===== */
+.badge-new{background:var(--primary);color:white;font-size:9px;font-weight:800;padding:2px 6px;border-radius:50px;vertical-align:top;margin-left:4px;}
+.empty-state{text-align:center;padding:40px 20px;color:var(--text-light);}
+.empty-state .es-icon{font-size:60px;display:block;margin-bottom:12px;}
+.empty-state p{font-size:15px;font-weight:600;}
+.progress-ring{display:flex;align-items:center;gap:12px;background:white;border-radius:var(--radius-sm);padding:12px 16px;box-shadow:var(--shadow-sm);margin-bottom:12px;}
+.pr-bar{flex:1;height:8px;background:#EDF2F7;border-radius:50px;}
+.pr-bar-fill{height:100%;border-radius:50px;transition:width .5s;}
+.pr-label{font-size:12px;font-weight:700;color:var(--text-light);min-width:36px;text-align:right;}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:400px){
+  .quiz-options{grid-template-columns:1fr;}
+  .subject-grid{grid-template-columns:1fr 1fr;}
+}
+
+/* ===== MATH TAB ===== */
+.math-hero{background:linear-gradient(135deg,#FF922B,#FF6B6B);border-radius:var(--radius-lg);padding:24px;color:white;margin-bottom:16px;position:relative;overflow:hidden;}
+.math-hero::after{content:'🧮';position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:64px;opacity:.25;}
+.math-hero h2{font-family:var(--font-title);font-size:26px;margin-bottom:4px;}
+.math-hero p{opacity:.92;font-size:14px;}
+.math-xp-wrap{margin-top:10px;background:rgba(255,255,255,.3);border-radius:50px;height:10px;}
+.math-xp-bar{height:100%;border-radius:50px;background:var(--accent);transition:width .5s;}
+.math-xp-label{font-size:12px;margin-top:4px;opacity:.9;}
+
+/* Grade selector bar */
+.grade-toggle-bar{display:flex;align-items:center;justify-content:space-between;background:white;border-radius:var(--radius-sm);padding:12px 16px;box-shadow:var(--shadow-sm);cursor:pointer;margin-bottom:8px;}
+.grade-toggle-label{font-weight:800;font-size:14px;color:var(--text);}
+.grade-toggle-val{font-weight:700;font-size:13px;color:var(--orange);flex:1;margin-left:8px;}
+.grade-toggle-arrow{font-size:13px;color:var(--text-light);transition:transform .2s;}
+.grade-toggle-bar.open .grade-toggle-arrow{transform:rotate(180deg);}
+
+.grade-panel{display:none;background:white;border-radius:var(--radius);padding:14px;box-shadow:var(--shadow-sm);margin-bottom:12px;flex-direction:column;gap:12px;}
+.grade-panel.open{display:flex;}
+.grade-section-hd{font-size:11px;font-weight:900;color:var(--text-light);letter-spacing:.06em;margin-bottom:4px;}
+.grade-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;}
+.grade-opt-btn{font-family:var(--font);font-weight:700;font-size:12px;padding:10px 4px;border-radius:var(--radius-sm);border:2.5px solid transparent;cursor:pointer;text-align:center;line-height:1.4;transition:all .18s;}
+.grade-opt-btn small{display:block;font-weight:400;font-size:10px;opacity:.8;margin-top:1px;}
+.grade-opt-btn.g1{background:#E8F5E9;color:#2E7D32;}
+.grade-opt-btn.g2{background:#E3F2FD;color:#1565C0;}
+.grade-opt-btn.g3{background:#FFF3E0;color:#E65100;}
+.grade-opt-btn.active{border-color:currentColor;transform:scale(1.05);}
+
+/* Problem card */
+.math-problem-card{background:white;border-radius:var(--radius-lg);padding:22px 20px;box-shadow:var(--shadow-sm);text-align:center;margin-bottom:12px;}
+.math-op-badge{display:inline-block;font-family:var(--font-title);font-size:13px;padding:4px 14px;border-radius:50px;margin-bottom:10px;}
+.math-op-add{background:#E8F5E9;color:#2E7D32;}
+.math-op-sub{background:#FFF3E0;color:#E65100;}
+.math-op-mul{background:#E3F2FD;color:#1565C0;}
+.math-op-div{background:#F3E5F5;color:#6A1B9A;}
+.math-problem-text{font-family:var(--font-title);font-size:clamp(32px,9vw,50px);color:var(--text);line-height:1.1;margin-bottom:8px;min-height:58px;display:flex;align-items:center;justify-content:center;}
+.math-hint-text{font-size:13px;color:var(--text-light);min-height:18px;font-style:italic;}
+
+/* Answer row */
+.math-answer-row{display:flex;gap:8px;align-items:stretch;margin-bottom:10px;}
+.math-answer-input{flex:1;font-family:var(--font-title);font-size:28px;text-align:center;border:3px solid #E2E8F0;border-radius:var(--radius-sm);padding:12px 8px;outline:none;background:white;color:var(--text);transition:border-color .2s;-webkit-appearance:none;-moz-appearance:textfield;}
+.math-answer-input:focus{border-color:var(--blue);}
+.math-answer-input.correct{border-color:var(--green);background:#ECFDF5;}
+.math-answer-input.wrong{border-color:var(--primary);background:#FFF5F5;}
+input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;}
+.math-btn{font-family:var(--font);font-weight:800;font-size:15px;border:none;border-radius:var(--radius-sm);padding:13px 16px;cursor:pointer;transition:transform .1s;white-space:nowrap;}
+.math-btn:active{transform:scale(.94);}
+.math-btn.check{background:linear-gradient(135deg,var(--blue),#1D4ED8);color:white;flex:1;font-size:17px;box-shadow:0 4px 15px rgba(59,130,246,.35);}
+.math-btn.hint{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#333;}
+
+/* Numpad */
+.math-numpad{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;background:white;border-radius:var(--radius);padding:12px;box-shadow:var(--shadow-sm);margin-bottom:10px;}
+.math-pad-btn{font-family:var(--font-title);font-size:20px;background:#F7FAFC;border:2px solid #E2E8F0;border-radius:var(--radius-sm);padding:14px 6px;cursor:pointer;color:var(--text);transition:background .1s,transform .1s;user-select:none;}
+.math-pad-btn:active{transform:scale(.91);}
+.math-pad-btn.num{background:white;}
+.math-pad-btn.del{background:#FFF3E0;border-color:#FECBA1;color:var(--orange);}
+.math-pad-btn.ok{background:linear-gradient(135deg,var(--green),var(--green-dark));border-color:var(--green-dark);color:white;grid-column:span 2;}
+.math-pad-btn.neg{background:#F3E5F5;border-color:#CE93D8;color:var(--purple);}
+
+/* Feedback */
+.math-feedback{border-radius:var(--radius-sm);padding:13px 18px;font-weight:700;font-size:15px;text-align:center;min-height:48px;display:flex;align-items:center;justify-content:center;transition:all .3s;margin-bottom:10px;}
+.math-feedback.correct{background:#ECFDF5;color:var(--green-dark);border:2px solid #6EE7B7;}
+.math-feedback.wrong{background:#FFF5F5;color:var(--primary-dark);border:2px solid #FCA5A5;}
+.math-feedback.idle{background:#F7FAFC;color:var(--text-light);border:2px solid #E2E8F0;}
+.math-feedback.loading{background:#EFF6FF;color:var(--blue-dark);border:2px solid #BFDBFE;}
+
+/* Next btn */
+.math-next-btn{width:100%;padding:16px;background:linear-gradient(135deg,var(--green),var(--green-dark));color:white;border-radius:var(--radius-sm);font-size:16px;font-weight:800;box-shadow:0 4px 15px rgba(16,185,129,.35);border:none;cursor:pointer;transition:transform .2s;}
+.math-next-btn:hover{transform:translateY(-2px);}
+.math-net-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#CBD5E0;margin-left:6px;vertical-align:middle;transition:background .3s;}
+.math-net-dot.online{background:var(--green);}
+.math-net-dot.offline{background:var(--primary);}
+@keyframes mathSpin{to{transform:rotate(360deg)}}
+.math-spinner{display:inline-block;width:16px;height:16px;border:3px solid rgba(59,130,246,.3);border-top-color:var(--blue);border-radius:50%;animation:mathSpin .7s linear infinite;vertical-align:middle;margin-right:6px;}
+
+/* ===== AGENT TAB ===== */
+.agent-hero{background:linear-gradient(135deg,#6366F1,#A855F7);border-radius:var(--radius-lg);padding:20px;color:white;margin-bottom:14px;position:relative;overflow:hidden;}
+.agent-hero::after{content:'🤖';position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:56px;opacity:.2;}
+.agent-hero h2{font-family:var(--font-title);font-size:24px;margin-bottom:2px;}
+.agent-hero p{font-size:13px;opacity:.9;}
+
+.agent-mode-tabs{display:flex;gap:8px;margin-bottom:14px;}
+.agent-mode-btn{flex:1;padding:10px 6px;border-radius:var(--radius-sm);font-weight:800;font-size:13px;border:2.5px solid transparent;background:white;color:var(--text-light);box-shadow:var(--shadow-sm);transition:all .2s;cursor:pointer;}
+.agent-mode-btn.active{color:white;border-color:transparent;}
+.agent-mode-btn.mode-chat.active{background:linear-gradient(135deg,#6366F1,#A855F7);}
+.agent-mode-btn.mode-math.active{background:linear-gradient(135deg,var(--orange),var(--primary));}
+.agent-mode-btn.mode-english.active{background:linear-gradient(135deg,var(--green),var(--blue));}
+
+/* Chat area */
+.agent-chat{background:white;border-radius:var(--radius);box-shadow:var(--shadow-sm);min-height:280px;max-height:340px;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;margin-bottom:10px;scroll-behavior:smooth;}
+.chat-msg{display:flex;gap:8px;align-items:flex-start;animation:fadeIn .3s ease;}
+.chat-msg.user{flex-direction:row-reverse;}
+.chat-avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.chat-avatar.bot{background:linear-gradient(135deg,#6366F1,#A855F7);}
+.chat-avatar.user{background:linear-gradient(135deg,var(--orange),var(--primary));}
+.chat-bubble{max-width:82%;padding:10px 14px;border-radius:18px;font-size:14px;line-height:1.5;}
+.chat-bubble.bot{background:#F3F4F6;color:var(--text);border-bottom-left-radius:4px;}
+.chat-bubble.user{background:linear-gradient(135deg,#6366F1,#A855F7);color:white;border-bottom-right-radius:4px;}
+.chat-bubble code{background:rgba(0,0,0,.08);padding:2px 5px;border-radius:4px;font-family:monospace;font-size:13px;}
+.chat-bubble.bot code{background:rgba(99,102,241,.12);color:#4338CA;}
+.chat-typing{display:flex;gap:4px;padding:10px 14px;background:#F3F4F6;border-radius:18px;border-bottom-left-radius:4px;width:60px;}
+.chat-typing span{width:7px;height:7px;background:#A0AEC0;border-radius:50%;animation:typingDot 1.2s infinite;}
+.chat-typing span:nth-child(2){animation-delay:.2s;}
+.chat-typing span:nth-child(3){animation-delay:.4s;}
+@keyframes typingDot{0%,60%,100%{transform:translateY(0);opacity:.4}30%{transform:translateY(-6px);opacity:1}}
+
+/* Input row */
+.agent-input-row{display:flex;gap:8px;align-items:center;}
+.agent-input{flex:1;padding:13px 16px;border:2.5px solid #E2E8F0;border-radius:var(--radius-sm);font-size:15px;background:white;color:var(--text);transition:border-color .2s;}
+.agent-input:focus{border-color:#6366F1;outline:none;}
+.agent-send-btn{padding:13px 18px;background:linear-gradient(135deg,#6366F1,#A855F7);color:white;border-radius:var(--radius-sm);font-size:20px;border:none;cursor:pointer;transition:transform .15s;box-shadow:0 4px 14px rgba(99,102,241,.35);}
+.agent-send-btn:active{transform:scale(.93);}
+.agent-send-btn:disabled{opacity:.45;cursor:default;}
+
+/* Suggestion chips */
+.agent-chips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:12px;}
+.agent-chip{padding:7px 13px;background:white;border:2px solid #E2E8F0;border-radius:50px;font-size:12px;font-weight:700;color:var(--text-light);cursor:pointer;transition:all .18s;box-shadow:var(--shadow-sm);}
+.agent-chip:hover{border-color:#6366F1;color:#6366F1;transform:translateY(-1px);}
+
+/* Math gen panel */
+.wolfram-gen-card{background:white;border-radius:var(--radius);box-shadow:var(--shadow-sm);padding:16px;margin-bottom:12px;}
+.wolfram-gen-title{font-weight:900;font-size:15px;margin-bottom:12px;display:flex;align-items:center;gap:6px;}
+.wolfram-gen-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;}
+.wolfram-select{padding:10px 12px;border:2px solid #E2E8F0;border-radius:var(--radius-sm);font-family:var(--font);font-size:13px;font-weight:700;background:white;color:var(--text);cursor:pointer;}
+.wolfram-select:focus{outline:none;border-color:#6366F1;}
+.wolfram-gen-btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--orange),var(--primary));color:white;border-radius:var(--radius-sm);font-size:15px;font-weight:800;border:none;cursor:pointer;box-shadow:0 4px 14px rgba(249,115,22,.35);transition:transform .15s;}
+.wolfram-gen-btn:active{transform:scale(.97);}
+.wolfram-gen-btn:disabled{opacity:.5;cursor:default;}
+
+/* Wolfram result card */
+.wolfram-result{background:#FFFBEB;border:2px solid #FDE68A;border-radius:var(--radius-sm);padding:14px;margin-bottom:10px;display:none;}
+.wolfram-result.show{display:block;animation:fadeIn .3s ease;}
+.wolfram-result-title{font-weight:900;font-size:13px;color:#92400E;margin-bottom:6px;}
+.wolfram-result-body{font-size:15px;color:var(--text);font-weight:700;line-height:1.6;}
+.wolfram-result-step{font-size:13px;color:var(--text-light);margin-top:6px;line-height:1.6;}
+.wolfram-result img{max-width:100%;border-radius:8px;margin-top:8px;}
+
+/* English mode */
+.english-section{background:white;border-radius:var(--radius);box-shadow:var(--shadow-sm);padding:16px;margin-bottom:12px;}
+.english-section-title{font-weight:900;font-size:14px;margin-bottom:10px;color:var(--text);}
+.english-check-input{width:100%;padding:12px 14px;border:2.5px solid #E2E8F0;border-radius:var(--radius-sm);font-size:16px;font-family:var(--font);margin-bottom:8px;}
+.english-check-input:focus{outline:none;border-color:var(--green);}
+.english-check-btn{width:100%;padding:13px;background:linear-gradient(135deg,var(--green),var(--blue));color:white;border-radius:var(--radius-sm);font-weight:800;font-size:15px;border:none;cursor:pointer;box-shadow:0 4px 14px rgba(16,185,129,.3);}
+.wolfram-badge{display:inline-flex;align-items:center;gap:4px;background:#FFF7ED;border:1.5px solid #FED7AA;border-radius:50px;padding:3px 10px;font-size:11px;font-weight:700;color:#C2410C;margin-bottom:10px;}
+</style>
+</head>
+<body>
+
+<!-- ===== LOGIN ===== -->
+<div id="screen-login" class="screen active">
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="logo-icon">🌍</div>
+      <h1>LearnWorld</h1>
+      <p>Fun learning for kids! 🎉</p>
+    </div>
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" id="login-email" placeholder="your@email.com" value="student@learn.com"/>
+    </div>
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" id="login-pw" placeholder="••••••••" value="password"/>
+    </div>
+    <button class="btn-primary" onclick="doLogin()">🚀 Start Learning!</button>
+    <div class="login-divider">— or —</div>
+    <button class="btn-guest" onclick="doLogin()">👋 Try as Guest</button>
+  </div>
+</div>
+
+<!-- ===== ONBOARDING ===== -->
+<div id="screen-onboard" class="screen">
+  <div class="onboard-card">
+    <div class="teacher-char"><span class="teacher-emoji">🐱</span></div>
+    <div class="teacher-bubble" id="ob-bubble">Hi there! I'm Professor Whiskers! Let's set up your profile!</div>
+    <div class="ob-progress" id="ob-progress"></div>
+    <div id="ob-content"></div>
+    <button class="btn-next" id="ob-next-btn" onclick="obNext()">Next ➡️</button>
+  </div>
+</div>
+
+<!-- ===== MAIN APP ===== -->
+<div id="screen-app" class="screen">
+  <div class="app-header">
+    <div class="header-left">
+      <span class="header-pet" id="header-pet" onclick="showTab('pet')">🐱</span>
+      <div class="header-info">
+        <div class="user-name" id="header-name">Student</div>
+        <div class="user-level" id="header-level">Level 1 Explorer</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <button id="lang-toggle-btn" onclick="toggleLang()" style="
+        background:linear-gradient(135deg,#667eea,#764ba2);
+        color:white;border:none;border-radius:50px;
+        padding:6px 12px;font-size:12px;font-weight:800;
+        cursor:pointer;font-family:var(--font);
+        box-shadow:0 2px 8px rgba(102,126,234,.4);
+        transition:transform .2s;
+      " onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">🌐 한국어</button>
+      <div class="header-coins">
+        <span>🪙</span>
+        <span id="header-coins">0</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="app-content" id="app-content">
+    <!-- Content injected by JS -->
+  </div>
+
+  <div class="bottom-nav" id="bottom-nav">
+    <button class="nav-btn active" onclick="showTab('home')">
+      <span class="nav-icon">🏠</span><span class="nav-label" data-en="Home" data-ko="홈">Home</span>
+    </button>
+    <button class="nav-btn" onclick="showTab('vocab')">
+      <span class="nav-icon">📚</span><span class="nav-label" data-en="Words" data-ko="단어">Words</span>
+    </button>
+    <button class="nav-btn" onclick="showTab('math')">
+      <span class="nav-icon">🧮</span><span class="nav-label" data-en="Math" data-ko="수학">Math</span>
+    </button>
+    <button class="nav-btn" onclick="showTab('agent')">
+      <span class="nav-icon">🤖</span><span class="nav-label" data-en="AI Tutor" data-ko="AI 튜터">AI Tutor</span>
+    </button>
+    <button class="nav-btn" onclick="showTab('profile')">
+      <span class="nav-icon">👤</span><span class="nav-label" data-en="Me" data-ko="내정보">Me</span>
+    </button>
+  </div>
+</div>
+
+<!-- Country detail overlay -->
+<div id="country-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;display:none;align-items:flex-end;justify-content:center;">
+  <div style="background:white;border-radius:24px 24px 0 0;padding:30px;width:100%;max-width:500px;position:relative;">
+    <button style="position:absolute;top:16px;right:20px;font-size:24px;background:none;border:none;cursor:pointer;color:#718096;" onclick="closeCountryOverlay()">✕</button>
+    <div id="country-overlay-content"></div>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   LANGUAGE SYSTEM (EN / KO)
+============================================================ */
+let currentLang = localStorage.getItem('learnworld_lang') || 'en';
+
+const T = {
+  en: {
+    aiTutorTitle: 'Claude AI Tutor 🤖',
+    aiTutorSub: 'Powered by <b>Claude AI</b> + Wolfram|Alpha — ask anything!',
+    modeChat: '💬 Chat', modeMath: '🧮 Math Gen', modeEnglish: '📖 English',
+    inputPlaceholder: 'Ask anything…',
+    inputPlaceholderKo: 'Ask anything…',
+    greetingMsg: "Hi! 👋 I'm Claude, your AI Tutor! Ask me any question — math, science, English, or anything you're curious about!",
+    thinkingMsg: 'Thinking…',
+    langToggleLabel: '🌐 한국어',
+    chips: ['What is 5 × 9?', 'Explain photosynthesis', 'How far is the Moon?', 'What is π?', 'Why is the sky blue?'],
+    mathChips: ['Addition ➕', 'Multiplication ✖️', 'Word Problem 📝'],
+    englishChips: ['Spell: necessary', 'Define: curious', 'Grammar check', 'Synonym of happy'],
+  },
+  ko: {
+    aiTutorTitle: 'Claude AI 선생님 🤖',
+    aiTutorSub: '<b>Claude AI</b> + Wolfram|Alpha로 무엇이든 물어보세요!',
+    modeChat: '💬 채팅', modeMath: '🧮 수학 생성', modeEnglish: '📖 영어',
+    inputPlaceholder: '무엇이든 물어보세요…',
+    inputPlaceholderKo: '무엇이든 물어보세요…',
+    greetingMsg: "안녕하세요! 👋 저는 Claude AI 선생님이에요! 수학, 과학, 영어, 무엇이든 질문해 보세요!",
+    thinkingMsg: '생각 중…',
+    langToggleLabel: '🌐 English',
+    chips: ['5 × 9 = ?', '광합성이 뭐야?', '달까지 거리는?', '원주율(π)이란?', '하늘은 왜 파래?'],
+    mathChips: ['덧셈 ➕', '곱셈 ✖️', '문장제 📝'],
+    englishChips: ['spell: necessary', 'define: curious', '문법 검사', 'happy 동의어'],
+  }
+};
+
+function t(key) { return T[currentLang][key] || T.en[key] || key; }
+
+function toggleLang() {
+  currentLang = currentLang === 'en' ? 'ko' : 'en';
+  localStorage.setItem('learnworld_lang', currentLang);
+  // Update toggle button label
+  const btn = document.getElementById('lang-toggle-btn');
+  if(btn) btn.textContent = t('langToggleLabel');
+  // Update nav labels
+  document.querySelectorAll('.nav-label').forEach(el => {
+    el.textContent = el.getAttribute('data-' + currentLang) || el.textContent;
+  });
+  // If on agent tab, re-render
+  if(state && state.currentTab === 'agent') {
+    showTab('agent');
+  }
+  // Update greeting if chat is fresh
+  if(agentState.chatHistory.length === 0) {
+    // will be shown on next render
+  }
+}
+
+/* ============================================================
+   CLAUDE AI ENGINE
+============================================================ */
+const CLAUDE_SYSTEM_EN = `You are Claude, a friendly and encouraging AI tutor for kids aged 6-12. 
+Your personality:
+- Warm, enthusiastic, and patient like a great teacher
+- Use simple language appropriate for kids
+- Add relevant emojis to make responses fun 🎉
+- Give clear, step-by-step explanations when needed
+- Encourage and praise effort
+- Keep answers concise (2-4 sentences for simple questions, more for complex ones)
+- When explaining math, show the working step by step
+- If asked in Korean, respond naturally in Korean
+- You can handle: math, science, English vocabulary/grammar, general knowledge, creative questions
+- Always be safe and age-appropriate`;
+
+const CLAUDE_SYSTEM_KO = `당신은 Claude, 6-12세 어린이를 위한 친절하고 격려하는 AI 선생님입니다.
+성격:
+- 따뜻하고 열정적이며 인내심 있는 선생님처럼 대화하세요
+- 아이들이 이해할 수 있는 쉬운 언어를 사용하세요
+- 재미있는 이모지를 적절히 사용하세요 🎉
+- 필요할 때 단계별로 명확하게 설명하세요
+- 노력을 칭찬하고 격려하세요
+- 간결하게 답하세요 (간단한 질문은 2-4문장, 복잡한 건 더 길게)
+- 수학 설명 시 풀이 과정을 보여주세요
+- 한국어로 질문하면 한국어로 답하고, 영어로 질문하면 영어로 답하세요
+- 수학, 과학, 영어 어휘/문법, 일반 상식, 창의적 질문 모두 답할 수 있어요
+- 항상 안전하고 어린이에게 적합한 내용만 답하세요`;
+
+async function callClaudeAPI(messages) {
+  // Build the system prompt based on language
+  const systemPrompt = currentLang === 'ko' ? CLAUDE_SYSTEM_KO : CLAUDE_SYSTEM_EN;
+  
+  try {
+    const resp = await fetch('/api/claude', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 800,
+        system: systemPrompt,
+        messages: messages,
+      }),
+      signal: AbortSignal.timeout(30000),
+    });
+    if(!resp.ok) throw new Error('API error');
+    const data = await resp.json();
+    const text = data.content?.find(b => b.type === 'text')?.text || '';
+    return text;
+  } catch(e) {
+    return null; // fall back to Wolfram
+  }
+}
+
+// Converts plain markdown-ish text to safe HTML for chat bubbles
+function claudeTextToHTML(text) {
+  if(!text) return '';
+  return text
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/\*\*(.+?)\*\*/g,'<b>$1</b>')
+    .replace(/\*(.+?)\*/g,'<i>$1</i>')
+    .replace(/`(.+?)`/g,'<code>$1</code>')
+    .replace(/\n/g,'<br>');
+}
+
+/* ============================================================
+   STATE
+============================================================ */
+let state = {
+  user: { name:'', age:'', gender:'', email:'' },
+  pet: { type:'cat', color:'default', hat:'none', glasses:'none', clothes:'none' },
+  coins: 250,
+  xp: 0,
+  streak: 0,
+  currentTab: 'home',
+  medals: [],
+  studiedWords: {},
+  studiedFlags: {},
+  continentProgress: {},
+  // quiz state
+  quiz: {
+    words: [], idx: 0, score: 0, wrong: [],
+    type: 'mcq', // mcq | typing | matching | car
+    category: '', level: 'beginner',
+    mode: 'vocab' // vocab | flags
+  },
+  // flashcard state
+  flashcard: { words: [], idx: 0 },
+  // flag learning state
+  flags: { continent: 'Asia', country: null },
+  obStep: 0,
+};
+
+/* ============================================================
+   ALL COUNTRIES DATA (ISO 3166 compliant, all continents)
+============================================================ */
+const ALL_COUNTRIES = {
+  Asia: [
+    {name:'Afghanistan',flag:'🇦🇫',capital:'Kabul',code:'AF'},
+    {name:'Armenia',flag:'🇦🇲',capital:'Yerevan',code:'AM'},
+    {name:'Azerbaijan',flag:'🇦🇿',capital:'Baku',code:'AZ'},
+    {name:'Bahrain',flag:'🇧🇭',capital:'Manama',code:'BH'},
+    {name:'Bangladesh',flag:'🇧🇩',capital:'Dhaka',code:'BD'},
+    {name:'Bhutan',flag:'🇧🇹',capital:'Thimphu',code:'BT'},
+    {name:'Brunei',flag:'🇧🇳',capital:'Bandar Seri Begawan',code:'BN'},
+    {name:'Cambodia',flag:'🇰🇭',capital:'Phnom Penh',code:'KH'},
+    {name:'China',flag:'🇨🇳',capital:'Beijing',code:'CN'},
+    {name:'Cyprus',flag:'🇨🇾',capital:'Nicosia',code:'CY'},
+    {name:'Georgia',flag:'🇬🇪',capital:'Tbilisi',code:'GE'},
+    {name:'India',flag:'🇮🇳',capital:'New Delhi',code:'IN'},
+    {name:'Indonesia',flag:'🇮🇩',capital:'Jakarta',code:'ID'},
+    {name:'Iran',flag:'🇮🇷',capital:'Tehran',code:'IR'},
+    {name:'Iraq',flag:'🇮🇶',capital:'Baghdad',code:'IQ'},
+    {name:'Israel',flag:'🇮🇱',capital:'Jerusalem',code:'IL'},
+    {name:'Japan',flag:'🇯🇵',capital:'Tokyo',code:'JP'},
+    {name:'Jordan',flag:'🇯🇴',capital:'Amman',code:'JO'},
+    {name:'Kazakhstan',flag:'🇰🇿',capital:'Nur-Sultan',code:'KZ'},
+    {name:'Kuwait',flag:'🇰🇼',capital:'Kuwait City',code:'KW'},
+    {name:'Kyrgyzstan',flag:'🇰🇬',capital:'Bishkek',code:'KG'},
+    {name:'Laos',flag:'🇱🇦',capital:'Vientiane',code:'LA'},
+    {name:'Lebanon',flag:'🇱🇧',capital:'Beirut',code:'LB'},
+    {name:'Malaysia',flag:'🇲🇾',capital:'Kuala Lumpur',code:'MY'},
+    {name:'Maldives',flag:'🇲🇻',capital:'Male',code:'MV'},
+    {name:'Mongolia',flag:'🇲🇳',capital:'Ulaanbaatar',code:'MN'},
+    {name:'Myanmar',flag:'🇲🇲',capital:'Naypyidaw',code:'MM'},
+    {name:'Nepal',flag:'🇳🇵',capital:'Kathmandu',code:'NP'},
+    {name:'North Korea',flag:'🇰🇵',capital:'Pyongyang',code:'KP'},
+    {name:'Oman',flag:'🇴🇲',capital:'Muscat',code:'OM'},
+    {name:'Pakistan',flag:'🇵🇰',capital:'Islamabad',code:'PK'},
+    {name:'Palestine',flag:'🇵🇸',capital:'Ramallah',code:'PS'},
+    {name:'Philippines',flag:'🇵🇭',capital:'Manila',code:'PH'},
+    {name:'Qatar',flag:'🇶🇦',capital:'Doha',code:'QA'},
+    {name:'Saudi Arabia',flag:'🇸🇦',capital:'Riyadh',code:'SA'},
+    {name:'Singapore',flag:'🇸🇬',capital:'Singapore',code:'SG'},
+    {name:'South Korea',flag:'🇰🇷',capital:'Seoul',code:'KR'},
+    {name:'Sri Lanka',flag:'🇱🇰',capital:'Colombo',code:'LK'},
+    {name:'Syria',flag:'🇸🇾',capital:'Damascus',code:'SY'},
+    {name:'Taiwan',flag:'🇹🇼',capital:'Taipei',code:'TW'},
+    {name:'Tajikistan',flag:'🇹🇯',capital:'Dushanbe',code:'TJ'},
+    {name:'Thailand',flag:'🇹🇭',capital:'Bangkok',code:'TH'},
+    {name:'Timor-Leste',flag:'🇹🇱',capital:'Dili',code:'TL'},
+    {name:'Turkey',flag:'🇹🇷',capital:'Ankara',code:'TR'},
+    {name:'Turkmenistan',flag:'🇹🇲',capital:'Ashgabat',code:'TM'},
+    {name:'UAE',flag:'🇦🇪',capital:'Abu Dhabi',code:'AE'},
+    {name:'Uzbekistan',flag:'🇺🇿',capital:'Tashkent',code:'UZ'},
+    {name:'Vietnam',flag:'🇻🇳',capital:'Hanoi',code:'VN'},
+    {name:'Yemen',flag:'🇾🇪',capital:"Sana'a",code:'YE'},
+  ],
+  Europe: [
+    {name:'Albania',flag:'🇦🇱',capital:'Tirana',code:'AL'},
+    {name:'Andorra',flag:'🇦🇩',capital:'Andorra la Vella',code:'AD'},
+    {name:'Austria',flag:'🇦🇹',capital:'Vienna',code:'AT'},
+    {name:'Belarus',flag:'🇧🇾',capital:'Minsk',code:'BY'},
+    {name:'Belgium',flag:'🇧🇪',capital:'Brussels',code:'BE'},
+    {name:'Bosnia',flag:'🇧🇦',capital:'Sarajevo',code:'BA'},
+    {name:'Bulgaria',flag:'🇧🇬',capital:'Sofia',code:'BG'},
+    {name:'Croatia',flag:'🇭🇷',capital:'Zagreb',code:'HR'},
+    {name:'Czech Republic',flag:'🇨🇿',capital:'Prague',code:'CZ'},
+    {name:'Denmark',flag:'🇩🇰',capital:'Copenhagen',code:'DK'},
+    {name:'Estonia',flag:'🇪🇪',capital:'Tallinn',code:'EE'},
+    {name:'Finland',flag:'🇫🇮',capital:'Helsinki',code:'FI'},
+    {name:'France',flag:'🇫🇷',capital:'Paris',code:'FR'},
+    {name:'Germany',flag:'🇩🇪',capital:'Berlin',code:'DE'},
+    {name:'Greece',flag:'🇬🇷',capital:'Athens',code:'GR'},
+    {name:'Hungary',flag:'🇭🇺',capital:'Budapest',code:'HU'},
+    {name:'Iceland',flag:'🇮🇸',capital:'Reykjavik',code:'IS'},
+    {name:'Ireland',flag:'🇮🇪',capital:'Dublin',code:'IE'},
+    {name:'Italy',flag:'🇮🇹',capital:'Rome',code:'IT'},
+    {name:'Kosovo',flag:'🇽🇰',capital:'Pristina',code:'XK'},
+    {name:'Latvia',flag:'🇱🇻',capital:'Riga',code:'LV'},
+    {name:'Liechtenstein',flag:'🇱🇮',capital:'Vaduz',code:'LI'},
+    {name:'Lithuania',flag:'🇱🇹',capital:'Vilnius',code:'LT'},
+    {name:'Luxembourg',flag:'🇱🇺',capital:'Luxembourg City',code:'LU'},
+    {name:'Malta',flag:'🇲🇹',capital:'Valletta',code:'MT'},
+    {name:'Moldova',flag:'🇲🇩',capital:'Chisinau',code:'MD'},
+    {name:'Monaco',flag:'🇲🇨',capital:'Monaco',code:'MC'},
+    {name:'Montenegro',flag:'🇲🇪',capital:'Podgorica',code:'ME'},
+    {name:'Netherlands',flag:'🇳🇱',capital:'Amsterdam',code:'NL'},
+    {name:'North Macedonia',flag:'🇲🇰',capital:'Skopje',code:'MK'},
+    {name:'Norway',flag:'🇳🇴',capital:'Oslo',code:'NO'},
+    {name:'Poland',flag:'🇵🇱',capital:'Warsaw',code:'PL'},
+    {name:'Portugal',flag:'🇵🇹',capital:'Lisbon',code:'PT'},
+    {name:'Romania',flag:'🇷🇴',capital:'Bucharest',code:'RO'},
+    {name:'Russia',flag:'🇷🇺',capital:'Moscow',code:'RU'},
+    {name:'San Marino',flag:'🇸🇲',capital:'San Marino',code:'SM'},
+    {name:'Serbia',flag:'🇷🇸',capital:'Belgrade',code:'RS'},
+    {name:'Slovakia',flag:'🇸🇰',capital:'Bratislava',code:'SK'},
+    {name:'Slovenia',flag:'🇸🇮',capital:'Ljubljana',code:'SI'},
+    {name:'Spain',flag:'🇪🇸',capital:'Madrid',code:'ES'},
+    {name:'Sweden',flag:'🇸🇪',capital:'Stockholm',code:'SE'},
+    {name:'Switzerland',flag:'🇨🇭',capital:'Bern',code:'CH'},
+    {name:'Ukraine',flag:'🇺🇦',capital:'Kyiv',code:'UA'},
+    {name:'United Kingdom',flag:'🇬🇧',capital:'London',code:'GB'},
+    {name:'Vatican City',flag:'🇻🇦',capital:'Vatican City',code:'VA'},
+  ],
+  Americas: [
+    {name:'Antigua and Barbuda',flag:'🇦🇬',capital:"Saint John's",code:'AG'},
+    {name:'Argentina',flag:'🇦🇷',capital:'Buenos Aires',code:'AR'},
+    {name:'Bahamas',flag:'🇧🇸',capital:'Nassau',code:'BS'},
+    {name:'Barbados',flag:'🇧🇧',capital:'Bridgetown',code:'BB'},
+    {name:'Belize',flag:'🇧🇿',capital:'Belmopan',code:'BZ'},
+    {name:'Bolivia',flag:'🇧🇴',capital:'Sucre',code:'BO'},
+    {name:'Brazil',flag:'🇧🇷',capital:'Brasilia',code:'BR'},
+    {name:'Canada',flag:'🇨🇦',capital:'Ottawa',code:'CA'},
+    {name:'Chile',flag:'🇨🇱',capital:'Santiago',code:'CL'},
+    {name:'Colombia',flag:'🇨🇴',capital:'Bogota',code:'CO'},
+    {name:'Costa Rica',flag:'🇨🇷',capital:'San José',code:'CR'},
+    {name:'Cuba',flag:'🇨🇺',capital:'Havana',code:'CU'},
+    {name:'Dominica',flag:'🇩🇲',capital:'Roseau',code:'DM'},
+    {name:'Dominican Republic',flag:'🇩🇴',capital:'Santo Domingo',code:'DO'},
+    {name:'Ecuador',flag:'🇪🇨',capital:'Quito',code:'EC'},
+    {name:'El Salvador',flag:'🇸🇻',capital:'San Salvador',code:'SV'},
+    {name:'Grenada',flag:'🇬🇩',capital:"Saint George's",code:'GD'},
+    {name:'Guatemala',flag:'🇬🇹',capital:'Guatemala City',code:'GT'},
+    {name:'Guyana',flag:'🇬🇾',capital:'Georgetown',code:'GY'},
+    {name:'Haiti',flag:'🇭🇹',capital:'Port-au-Prince',code:'HT'},
+    {name:'Honduras',flag:'🇭🇳',capital:'Tegucigalpa',code:'HN'},
+    {name:'Jamaica',flag:'🇯🇲',capital:'Kingston',code:'JM'},
+    {name:'Mexico',flag:'🇲🇽',capital:'Mexico City',code:'MX'},
+    {name:'Nicaragua',flag:'🇳🇮',capital:'Managua',code:'NI'},
+    {name:'Panama',flag:'🇵🇦',capital:'Panama City',code:'PA'},
+    {name:'Paraguay',flag:'🇵🇾',capital:'Asuncion',code:'PY'},
+    {name:'Peru',flag:'🇵🇪',capital:'Lima',code:'PE'},
+    {name:'Saint Kitts and Nevis',flag:'🇰🇳',capital:'Basseterre',code:'KN'},
+    {name:'Saint Lucia',flag:'🇱🇨',capital:'Castries',code:'LC'},
+    {name:'Saint Vincent',flag:'🇻🇨',capital:'Kingstown',code:'VC'},
+    {name:'Suriname',flag:'🇸🇷',capital:'Paramaribo',code:'SR'},
+    {name:'Trinidad and Tobago',flag:'🇹🇹',capital:'Port of Spain',code:'TT'},
+    {name:'United States',flag:'🇺🇸',capital:'Washington D.C.',code:'US'},
+    {name:'Uruguay',flag:'🇺🇾',capital:'Montevideo',code:'UY'},
+    {name:'Venezuela',flag:'🇻🇪',capital:'Caracas',code:'VE'},
+  ],
+  Africa: [
+    {name:'Algeria',flag:'🇩🇿',capital:'Algiers',code:'DZ'},
+    {name:'Angola',flag:'🇦🇴',capital:'Luanda',code:'AO'},
+    {name:'Benin',flag:'🇧🇯',capital:'Porto-Novo',code:'BJ'},
+    {name:'Botswana',flag:'🇧🇼',capital:'Gaborone',code:'BW'},
+    {name:'Burkina Faso',flag:'🇧🇫',capital:'Ouagadougou',code:'BF'},
+    {name:'Burundi',flag:'🇧🇮',capital:'Gitega',code:'BI'},
+    {name:'Cabo Verde',flag:'🇨🇻',capital:'Praia',code:'CV'},
+    {name:'Cameroon',flag:'🇨🇲',capital:'Yaoundé',code:'CM'},
+    {name:'CAR',flag:'🇨🇫',capital:'Bangui',code:'CF'},
+    {name:'Chad',flag:'🇹🇩',capital:"N'Djamena",code:'TD'},
+    {name:'Comoros',flag:'🇰🇲',capital:'Moroni',code:'KM'},
+    {name:'DR Congo',flag:'🇨🇩',capital:'Kinshasa',code:'CD'},
+    {name:'Republic of Congo',flag:'🇨🇬',capital:'Brazzaville',code:'CG'},
+    {name:'Djibouti',flag:'🇩🇯',capital:'Djibouti',code:'DJ'},
+    {name:'Egypt',flag:'🇪🇬',capital:'Cairo',code:'EG'},
+    {name:'Equatorial Guinea',flag:'🇬🇶',capital:'Malabo',code:'GQ'},
+    {name:'Eritrea',flag:'🇪🇷',capital:'Asmara',code:'ER'},
+    {name:'Eswatini',flag:'🇸🇿',capital:'Mbabane',code:'SZ'},
+    {name:'Ethiopia',flag:'🇪🇹',capital:'Addis Ababa',code:'ET'},
+    {name:'Gabon',flag:'🇬🇦',capital:'Libreville',code:'GA'},
+    {name:'Gambia',flag:'🇬🇲',capital:'Banjul',code:'GM'},
+    {name:'Ghana',flag:'🇬🇭',capital:'Accra',code:'GH'},
+    {name:'Guinea',flag:'🇬🇳',capital:'Conakry',code:'GN'},
+    {name:'Guinea-Bissau',flag:'🇬🇼',capital:'Bissau',code:'GW'},
+    {name:'Ivory Coast',flag:'🇨🇮',capital:'Yamoussoukro',code:'CI'},
+    {name:'Kenya',flag:'🇰🇪',capital:'Nairobi',code:'KE'},
+    {name:'Lesotho',flag:'🇱🇸',capital:'Maseru',code:'LS'},
+    {name:'Liberia',flag:'🇱🇷',capital:'Monrovia',code:'LR'},
+    {name:'Libya',flag:'🇱🇾',capital:'Tripoli',code:'LY'},
+    {name:'Madagascar',flag:'🇲🇬',capital:'Antananarivo',code:'MG'},
+    {name:'Malawi',flag:'🇲🇼',capital:'Lilongwe',code:'MW'},
+    {name:'Mali',flag:'🇲🇱',capital:'Bamako',code:'ML'},
+    {name:'Mauritania',flag:'🇲🇷',capital:'Nouakchott',code:'MR'},
+    {name:'Mauritius',flag:'🇲🇺',capital:'Port Louis',code:'MU'},
+    {name:'Morocco',flag:'🇲🇦',capital:'Rabat',code:'MA'},
+    {name:'Mozambique',flag:'🇲🇿',capital:'Maputo',code:'MZ'},
+    {name:'Namibia',flag:'🇳🇦',capital:'Windhoek',code:'NA'},
+    {name:'Niger',flag:'🇳🇪',capital:'Niamey',code:'NE'},
+    {name:'Nigeria',flag:'🇳🇬',capital:'Abuja',code:'NG'},
+    {name:'Rwanda',flag:'🇷🇼',capital:'Kigali',code:'RW'},
+    {name:'São Tomé and Príncipe',flag:'🇸🇹',capital:'São Tomé',code:'ST'},
+    {name:'Senegal',flag:'🇸🇳',capital:'Dakar',code:'SN'},
+    {name:'Seychelles',flag:'🇸🇨',capital:'Victoria',code:'SC'},
+    {name:'Sierra Leone',flag:'🇸🇱',capital:'Freetown',code:'SL'},
+    {name:'Somalia',flag:'🇸🇴',capital:'Mogadishu',code:'SO'},
+    {name:'South Africa',flag:'🇿🇦',capital:'Cape Town',code:'ZA'},
+    {name:'South Sudan',flag:'🇸🇸',capital:'Juba',code:'SS'},
+    {name:'Sudan',flag:'🇸🇩',capital:'Khartoum',code:'SD'},
+    {name:'Tanzania',flag:'🇹🇿',capital:'Dodoma',code:'TZ'},
+    {name:'Togo',flag:'🇹🇬',capital:'Lomé',code:'TG'},
+    {name:'Tunisia',flag:'🇹🇳',capital:'Tunis',code:'TN'},
+    {name:'Uganda',flag:'🇺🇬',capital:'Kampala',code:'UG'},
+    {name:'Zambia',flag:'🇿🇲',capital:'Lusaka',code:'ZM'},
+    {name:'Zimbabwe',flag:'🇿🇼',capital:'Harare',code:'ZW'},
+  ],
+  Oceania: [
+    {name:'Australia',flag:'🇦🇺',capital:'Canberra',code:'AU'},
+    {name:'Fiji',flag:'🇫🇯',capital:'Suva',code:'FJ'},
+    {name:'Kiribati',flag:'🇰🇮',capital:'South Tarawa',code:'KI'},
+    {name:'Marshall Islands',flag:'🇲🇭',capital:'Majuro',code:'MH'},
+    {name:'Micronesia',flag:'🇫🇲',capital:'Palikir',code:'FM'},
+    {name:'Nauru',flag:'🇳🇷',capital:'Yaren',code:'NR'},
+    {name:'New Zealand',flag:'🇳🇿',capital:'Wellington',code:'NZ'},
+    {name:'Palau',flag:'🇵🇼',capital:'Ngerulmud',code:'PW'},
+    {name:'Papua New Guinea',flag:'🇵🇬',capital:'Port Moresby',code:'PG'},
+    {name:'Samoa',flag:'🇼🇸',capital:'Apia',code:'WS'},
+    {name:'Solomon Islands',flag:'🇸🇧',capital:'Honiara',code:'SB'},
+    {name:'Tonga',flag:'🇹🇴',capital:"Nuku'alofa",code:'TO'},
+    {name:'Tuvalu',flag:'🇹🇻',capital:'Funafuti',code:'TV'},
+    {name:'Vanuatu',flag:'🇻🇺',capital:'Port Vila',code:'VU'},
+  ],
+};
+
+/* ============================================================
+   VOCABULARY DATA
+============================================================ */
+const VOCAB_CATEGORIES = {
+  numbers: {
+    name:'Numbers', icon:'🔢', color:'color-red',
+    beginner: [
+      {word:'One',meaning:'하나 (1)',emoji:'1️⃣',example:'I have one apple.'},
+      {word:'Two',meaning:'둘 (2)',emoji:'2️⃣',example:'She has two cats.'},
+      {word:'Three',meaning:'셋 (3)',emoji:'3️⃣',example:'Three birds on a tree.'},
+      {word:'Four',meaning:'넷 (4)',emoji:'4️⃣',example:'Four wheels on a car.'},
+      {word:'Five',meaning:'다섯 (5)',emoji:'5️⃣',example:'Five fingers on a hand.'},
+      {word:'Six',meaning:'여섯 (6)',emoji:'6️⃣',example:'Six sides of a cube.'},
+      {word:'Seven',meaning:'일곱 (7)',emoji:'7️⃣',example:'Seven days in a week.'},
+      {word:'Eight',meaning:'여덟 (8)',emoji:'8️⃣',example:'Eight legs of a spider.'},
+      {word:'Nine',meaning:'아홉 (9)',emoji:'9️⃣',example:'Nine planets.'},
+      {word:'Ten',meaning:'열 (10)',emoji:'🔟',example:'Ten toes on my feet.'},
+    ],
+    intermediate: [
+      {word:'Twenty',meaning:'스물 (20)',emoji:'2️⃣0️⃣',example:'Twenty students in class.'},
+      {word:'Fifty',meaning:'쉰 (50)',emoji:'5️⃣0️⃣',example:'Fifty percent done.'},
+      {word:'Hundred',meaning:'백 (100)',emoji:'💯',example:'One hundred points!'},
+      {word:'Thousand',meaning:'천 (1000)',emoji:'🔢',example:'A thousand stars.'},
+      {word:'Million',meaning:'백만',emoji:'💰',example:'One million dollars.'},
+      {word:'Half',meaning:'반 (1/2)',emoji:'½',example:'Half an orange.'},
+      {word:'Double',meaning:'두 배',emoji:'✌️',example:'Double the recipe.'},
+      {word:'Triple',meaning:'세 배',emoji:'3️⃣✖️',example:'Triple the score.'},
+      {word:'Quarter',meaning:'사분의 일',emoji:'¼',example:'A quarter of pie.'},
+      {word:'Dozen',meaning:'12개',emoji:'🥚',example:'A dozen eggs.'},
+    ],
+    advanced: [
+      {word:'Prime',meaning:'소수',emoji:'🔢',example:'Seven is a prime number.'},
+      {word:'Fraction',meaning:'분수',emoji:'➗',example:'Write it as a fraction.'},
+      {word:'Decimal',meaning:'소수점',emoji:'.',example:'Pi is a decimal number.'},
+      {word:'Infinite',meaning:'무한',emoji:'∞',example:'Infinite possibilities.'},
+      {word:'Negative',meaning:'음수',emoji:'➖',example:'Negative ten degrees.'},
+      {word:'Percentage',meaning:'퍼센트',emoji:'%',example:'Fifty percentage off.'},
+      {word:'Ratio',meaning:'비율',emoji:'⚖️',example:'The ratio is 2 to 1.'},
+      {word:'Equation',meaning:'방정식',emoji:'➕',example:'Solve the equation.'},
+      {word:'Average',meaning:'평균',emoji:'📊',example:'The average score.'},
+      {word:'Multiply',meaning:'곱하다',emoji:'✖️',example:'Multiply by three.'},
+    ]
+  },
+  shapes: {
+    name:'Shapes & Colors', icon:'🔵', color:'color-blue',
+    beginner: [
+      {word:'Circle',meaning:'원',emoji:'⭕',example:'The sun is a circle.'},
+      {word:'Square',meaning:'정사각형',emoji:'🟥',example:'A square has four sides.'},
+      {word:'Triangle',meaning:'삼각형',emoji:'🔺',example:'A triangle has three corners.'},
+      {word:'Rectangle',meaning:'직사각형',emoji:'▬',example:'A book is a rectangle.'},
+      {word:'Star',meaning:'별',emoji:'⭐',example:'Stars shine at night.'},
+      {word:'Heart',meaning:'하트',emoji:'❤️',example:'I love you, heart.'},
+      {word:'Red',meaning:'빨강',emoji:'🔴',example:'The apple is red.'},
+      {word:'Blue',meaning:'파랑',emoji:'🔵',example:'The sky is blue.'},
+      {word:'Green',meaning:'초록',emoji:'🟢',example:'Grass is green.'},
+      {word:'Yellow',meaning:'노랑',emoji:'🟡',example:'Bananas are yellow.'},
+    ],
+    intermediate: [
+      {word:'Pentagon',meaning:'오각형',emoji:'⬠',example:'A pentagon has five sides.'},
+      {word:'Hexagon',meaning:'육각형',emoji:'⬡',example:'Bees make hexagon cells.'},
+      {word:'Diamond',meaning:'마름모',emoji:'🔷',example:'A diamond shape.'},
+      {word:'Oval',meaning:'타원형',emoji:'🥚',example:'An egg is an oval.'},
+      {word:'Purple',meaning:'보라',emoji:'🟣',example:'Grapes are purple.'},
+      {word:'Orange',meaning:'주황',emoji:'🟠',example:'Oranges are orange.'},
+      {word:'Pink',meaning:'분홍',emoji:'🩷',example:'Flamingos are pink.'},
+      {word:'Brown',meaning:'갈색',emoji:'🟤',example:'Chocolate is brown.'},
+      {word:'Sphere',meaning:'구',emoji:'🌐',example:'Earth is a sphere.'},
+      {word:'Cylinder',meaning:'원기둥',emoji:'🥫',example:'A can is a cylinder.'},
+    ],
+    advanced: [
+      {word:'Polygon',meaning:'다각형',emoji:'🔷',example:'A polygon has many sides.'},
+      {word:'Parallelogram',meaning:'평행사변형',emoji:'▱',example:'Leaning square.'},
+      {word:'Rhombus',meaning:'마름모꼴',emoji:'🔸',example:'A rhombus is like a diamond.'},
+      {word:'Prism',meaning:'각기둥',emoji:'🔺',example:'A prism splits light.'},
+      {word:'Cone',meaning:'원뿔',emoji:'🔔',example:'Ice cream has a cone.'},
+      {word:'Pyramid',meaning:'피라미드',emoji:'🔺',example:'Egypt has pyramids.'},
+      {word:'Horizontal',meaning:'수평',emoji:'➡️',example:'A horizontal line.'},
+      {word:'Vertical',meaning:'수직',emoji:'⬆️',example:'A vertical line.'},
+      {word:'Diagonal',meaning:'대각선',emoji:'↗️',example:'A diagonal cut.'},
+      {word:'Symmetry',meaning:'대칭',emoji:'🦋',example:'Butterfly symmetry.'},
+    ]
+  },
+  family: {
+    name:'Family', icon:'👨‍👩‍👧‍👦', color:'color-green',
+    beginner: [
+      {word:'Mother',meaning:'엄마',emoji:'👩',example:'My mother cooks well.'},
+      {word:'Father',meaning:'아빠',emoji:'👨',example:'My father works hard.'},
+      {word:'Sister',meaning:'언니/여동생',emoji:'👧',example:'My sister plays piano.'},
+      {word:'Brother',meaning:'오빠/남동생',emoji:'👦',example:'My brother plays soccer.'},
+      {word:'Baby',meaning:'아기',emoji:'👶',example:'The baby is sleeping.'},
+      {word:'Grandfather',meaning:'할아버지',emoji:'👴',example:'My grandfather is wise.'},
+      {word:'Grandmother',meaning:'할머니',emoji:'👵',example:'Grandmother makes cookies.'},
+      {word:'Family',meaning:'가족',emoji:'👨‍👩‍👧‍👦',example:'I love my family.'},
+      {word:'Pet',meaning:'반려동물',emoji:'🐶',example:'Our pet is a dog.'},
+      {word:'Home',meaning:'집',emoji:'🏠',example:'Home is where love is.'},
+    ],
+    intermediate: [
+      {word:'Uncle',meaning:'삼촌/외삼촌',emoji:'🧔',example:'My uncle visits on weekends.'},
+      {word:'Aunt',meaning:'고모/이모',emoji:'👩',example:'Aunt Sarah is funny.'},
+      {word:'Cousin',meaning:'사촌',emoji:'🧑',example:'My cousin lives nearby.'},
+      {word:'Nephew',meaning:'조카(남)',emoji:'👦',example:'My nephew is five.'},
+      {word:'Niece',meaning:'조카(여)',emoji:'👧',example:'My niece loves reading.'},
+      {word:'Twin',meaning:'쌍둥이',emoji:'👬',example:'They are twins.'},
+      {word:'Stepmother',meaning:'새어머니',emoji:'👩',example:'My stepmother is kind.'},
+      {word:'Parents',meaning:'부모님',emoji:'👨‍👩‍👦',example:'My parents are teachers.'},
+      {word:'Siblings',meaning:'형제자매',emoji:'👫',example:'I have two siblings.'},
+      {word:'Relative',meaning:'친척',emoji:'🤝',example:'We visited relatives.'},
+    ],
+    advanced: [
+      {word:'Ancestor',meaning:'조상',emoji:'🏛️',example:'My ancestors were farmers.'},
+      {word:'Descendant',meaning:'후손',emoji:'🌱',example:'We are their descendants.'},
+      {word:'Guardian',meaning:'보호자',emoji:'🛡️',example:'The guardian protects.'},
+      {word:'Adoption',meaning:'입양',emoji:'💙',example:'They chose adoption.'},
+      {word:'Heritage',meaning:'유산',emoji:'🏺',example:'Our cultural heritage.'},
+      {word:'Generation',meaning:'세대',emoji:'📅',example:'New generation of kids.'},
+      {word:'Dynasty',meaning:'왕조',emoji:'👑',example:'A royal dynasty.'},
+      {word:'Patriarch',meaning:'가장',emoji:'🧓',example:'The family patriarch.'},
+      {word:'Matriarch',meaning:'여족장',emoji:'👵',example:'She is the matriarch.'},
+      {word:'Nuclear family',meaning:'핵가족',emoji:'🏠',example:'A nuclear family lives here.'},
+    ]
+  },
+  body: {
+    name:'Human Body', icon:'🧍', color:'color-purple',
+    beginner: [
+      {word:'Head',meaning:'머리',emoji:'🗣️',example:'Wear a hat on your head.'},
+      {word:'Eye',meaning:'눈',emoji:'👁️',example:'My eyes are brown.'},
+      {word:'Nose',meaning:'코',emoji:'👃',example:'I smell with my nose.'},
+      {word:'Mouth',meaning:'입',emoji:'👄',example:'Smile with your mouth.'},
+      {word:'Ear',meaning:'귀',emoji:'👂',example:'I hear with my ears.'},
+      {word:'Hand',meaning:'손',emoji:'✋',example:'Wave your hand.'},
+      {word:'Foot',meaning:'발',emoji:'🦶',example:'My foot is big.'},
+      {word:'Arm',meaning:'팔',emoji:'💪',example:'Strong arm muscles.'},
+      {word:'Leg',meaning:'다리',emoji:'🦵',example:'Run with your legs.'},
+      {word:'Hair',meaning:'머리카락',emoji:'💇',example:'Long beautiful hair.'},
+    ],
+    intermediate: [
+      {word:'Shoulder',meaning:'어깨',emoji:'🤷',example:'Shrug your shoulders.'},
+      {word:'Knee',meaning:'무릎',emoji:'🧎',example:'Bend your knee.'},
+      {word:'Elbow',meaning:'팔꿈치',emoji:'💪',example:'Hit your elbow.'},
+      {word:'Wrist',meaning:'손목',emoji:'⌚',example:'Wear watch on wrist.'},
+      {word:'Ankle',meaning:'발목',emoji:'🦶',example:'Sprained ankle.'},
+      {word:'Chest',meaning:'가슴',emoji:'❤️',example:'The heart is in chest.'},
+      {word:'Back',meaning:'등',emoji:'🧘',example:'Straight back posture.'},
+      {word:'Stomach',meaning:'배',emoji:'🫃',example:'My stomach growled.'},
+      {word:'Thumb',meaning:'엄지',emoji:'👍',example:'Thumbs up!'},
+      {word:'Tongue',meaning:'혀',emoji:'👅',example:'Taste with your tongue.'},
+    ],
+    advanced: [
+      {word:'Skeleton',meaning:'골격',emoji:'💀',example:'The skeleton supports body.'},
+      {word:'Muscle',meaning:'근육',emoji:'💪',example:'Strong muscles help us.'},
+      {word:'Vein',meaning:'정맥',emoji:'🩸',example:'Blood flows in veins.'},
+      {word:'Nerve',meaning:'신경',emoji:'⚡',example:'Nerves send signals.'},
+      {word:'Lung',meaning:'폐',emoji:'🫁',example:'Lungs help us breathe.'},
+      {word:'Kidney',meaning:'신장',emoji:'🫘',example:'Kidneys filter blood.'},
+      {word:'Brain',meaning:'뇌',emoji:'🧠',example:'The brain controls body.'},
+      {word:'Heart',meaning:'심장',emoji:'❤️',example:'The heart pumps blood.'},
+      {word:'Liver',meaning:'간',emoji:'🫀',example:'The liver detoxifies.'},
+      {word:'Immune',meaning:'면역',emoji:'🛡️',example:'Immune system protects.'},
+    ]
+  },
+  emotions: {
+    name:'Emotions', icon:'😊', color:'color-orange',
+    beginner: [
+      {word:'Happy',meaning:'행복한',emoji:'😊',example:'I am happy today!'},
+      {word:'Sad',meaning:'슬픈',emoji:'😢',example:'She looks sad.'},
+      {word:'Angry',meaning:'화난',emoji:'😠',example:'Don\'t be angry.'},
+      {word:'Scared',meaning:'무서운',emoji:'😨',example:'I am scared of dark.'},
+      {word:'Surprised',meaning:'놀란',emoji:'😲',example:'I was surprised!'},
+      {word:'Tired',meaning:'피곤한',emoji:'😴',example:'I feel so tired.'},
+      {word:'Excited',meaning:'신난',emoji:'🤩',example:'I\'m excited for trip!'},
+      {word:'Bored',meaning:'지루한',emoji:'😑',example:'I am bored at home.'},
+      {word:'Love',meaning:'사랑',emoji:'❤️',example:'I love my family.'},
+      {word:'Laugh',meaning:'웃음',emoji:'😂',example:'The joke made me laugh.'},
+    ],
+    intermediate: [
+      {word:'Nervous',meaning:'긴장한',emoji:'😰',example:'I\'m nervous about tests.'},
+      {word:'Confused',meaning:'혼란스러운',emoji:'😕',example:'I am confused by this.'},
+      {word:'Proud',meaning:'자랑스러운',emoji:'😤',example:'I am proud of you.'},
+      {word:'Shy',meaning:'수줍은',emoji:'😳',example:'She is very shy.'},
+      {word:'Jealous',meaning:'질투하는',emoji:'😒',example:'Don\'t be jealous.'},
+      {word:'Hopeful',meaning:'희망찬',emoji:'🤞',example:'Be hopeful about future.'},
+      {word:'Grateful',meaning:'감사하는',emoji:'🙏',example:'I am grateful for food.'},
+      {word:'Lonely',meaning:'외로운',emoji:'😔',example:'I feel lonely today.'},
+      {word:'Embarrassed',meaning:'당황한',emoji:'😳',example:'I was embarrassed.'},
+      {word:'Calm',meaning:'평온한',emoji:'😌',example:'Stay calm and breathe.'},
+    ],
+    advanced: [
+      {word:'Melancholy',meaning:'우울함',emoji:'😞',example:'A melancholy feeling.'},
+      {word:'Anxiety',meaning:'불안',emoji:'😟',example:'Anxiety before exams.'},
+      {word:'Compassion',meaning:'연민',emoji:'💙',example:'Show compassion to others.'},
+      {word:'Empathy',meaning:'공감',emoji:'🤝',example:'Empathy helps relationships.'},
+      {word:'Enthusiasm',meaning:'열정',emoji:'🔥',example:'Work with enthusiasm!'},
+      {word:'Frustration',meaning:'좌절',emoji:'😤',example:'Don\'t let frustration win.'},
+      {word:'Nostalgia',meaning:'향수',emoji:'🌅',example:'Nostalgia of childhood.'},
+      {word:'Contentment',meaning:'만족',emoji:'😊',example:'Feel contentment with life.'},
+      {word:'Remorse',meaning:'후회',emoji:'😔',example:'Remorse for mistakes.'},
+      {word:'Euphoria',meaning:'황홀감',emoji:'🌟',example:'Euphoria of winning.'},
+    ]
+  },
+  sports: {
+    name:'Sports', icon:'⚽', color:'color-teal',
+    beginner: [
+      {word:'Soccer',meaning:'축구',emoji:'⚽',example:'Kick the soccer ball.'},
+      {word:'Basketball',meaning:'농구',emoji:'🏀',example:'Shoot the basketball.'},
+      {word:'Tennis',meaning:'테니스',emoji:'🎾',example:'Hit the tennis ball.'},
+      {word:'Swimming',meaning:'수영',emoji:'🏊',example:'She swims every day.'},
+      {word:'Running',meaning:'달리기',emoji:'🏃',example:'Run as fast as you can.'},
+      {word:'Baseball',meaning:'야구',emoji:'⚾',example:'Hit a home run!'},
+      {word:'Volleyball',meaning:'배구',emoji:'🏐',example:'Set the volleyball.'},
+      {word:'Golf',meaning:'골프',emoji:'⛳',example:'Swing the golf club.'},
+      {word:'Jump',meaning:'점프하다',emoji:'🦘',example:'Jump as high as possible.'},
+      {word:'Win',meaning:'이기다',emoji:'🏆',example:'We will win today!'},
+    ],
+    intermediate: [
+      {word:'Gymnastics',meaning:'체조',emoji:'🤸',example:'Gymnastics takes balance.'},
+      {word:'Martial arts',meaning:'무술',emoji:'🥋',example:'Martial arts is discipline.'},
+      {word:'Cycling',meaning:'사이클링',emoji:'🚴',example:'I love cycling in park.'},
+      {word:'Archery',meaning:'양궁',emoji:'🏹',example:'Archery needs focus.'},
+      {word:'Skiing',meaning:'스키',emoji:'⛷️',example:'Ski down the mountain.'},
+      {word:'Boxing',meaning:'권투',emoji:'🥊',example:'Boxing is a hard sport.'},
+      {word:'Rowing',meaning:'조정',emoji:'🚣',example:'Rowing needs teamwork.'},
+      {word:'Fencing',meaning:'펜싱',emoji:'🤺',example:'Fencing is elegant.'},
+      {word:'Wrestling',meaning:'레슬링',emoji:'🤼',example:'Wrestling takes strength.'},
+      {word:'Trophy',meaning:'트로피',emoji:'🏆',example:'Win the gold trophy.'},
+    ],
+    advanced: [
+      {word:'Decathlon',meaning:'10종 경기',emoji:'🏅',example:'Decathlon has ten events.'},
+      {word:'Marathon',meaning:'마라톤',emoji:'🏃',example:'Run a full marathon.'},
+      {word:'Triathlon',meaning:'철인 3종',emoji:'🏊‍♀️',example:'Triathlon is very hard.'},
+      {word:'Sponsorship',meaning:'후원',emoji:'💼',example:'Athlete got sponsorship.'},
+      {word:'Championship',meaning:'선수권',emoji:'🏆',example:'World championship match.'},
+      {word:'Penalty',meaning:'패널티',emoji:'🟥',example:'Penalty kick in soccer.'},
+      {word:'Qualify',meaning:'자격을 얻다',emoji:'✅',example:'Qualify for the finals.'},
+      {word:'Referee',meaning:'심판',emoji:'🟨',example:'The referee blew whistle.'},
+      {word:'Stadium',meaning:'경기장',emoji:'🏟️',example:'Packed stadium crowd.'},
+      {word:'Athlete',meaning:'운동선수',emoji:'🤸',example:'A professional athlete.'},
+    ]
+  },
+  instruments: {
+    name:'Musical Instruments', icon:'🎵', color:'color-purple',
+    beginner: [
+      {word:'Piano',meaning:'피아노',emoji:'🎹',example:'Play the piano keys.'},
+      {word:'Guitar',meaning:'기타',emoji:'🎸',example:'Strum the guitar.'},
+      {word:'Drum',meaning:'드럼',emoji:'🥁',example:'Beat the drum.'},
+      {word:'Violin',meaning:'바이올린',emoji:'🎻',example:'Play the violin bow.'},
+      {word:'Flute',meaning:'플루트',emoji:'🎶',example:'Blow the flute softly.'},
+      {word:'Trumpet',meaning:'트럼펫',emoji:'🎺',example:'Sound the trumpet.'},
+      {word:'Harp',meaning:'하프',emoji:'🎼',example:'Pluck the harp strings.'},
+      {word:'Bell',meaning:'종',emoji:'🔔',example:'Ring the bell.'},
+      {word:'Drum',meaning:'북',emoji:'🪘',example:'Traditional drum beat.'},
+      {word:'Music',meaning:'음악',emoji:'🎵',example:'I love music so much.'},
+    ],
+    intermediate: [
+      {word:'Saxophone',meaning:'색소폰',emoji:'🎷',example:'Jazz saxophone solo.'},
+      {word:'Cello',meaning:'첼로',emoji:'🎻',example:'Deep cello sound.'},
+      {word:'Trombone',meaning:'트롬본',emoji:'🎺',example:'Slide the trombone.'},
+      {word:'Clarinet',meaning:'클라리넷',emoji:'🎶',example:'Clarinet is woodwind.'},
+      {word:'Accordion',meaning:'아코디언',emoji:'🪗',example:'Folk accordion music.'},
+      {word:'Banjo',meaning:'밴조',emoji:'🪕',example:'Country banjo strums.'},
+      {word:'Ukulele',meaning:'우쿨렐레',emoji:'🪕',example:'Tiny ukulele plays.'},
+      {word:'Bassoon',meaning:'바순',emoji:'🎶',example:'Low bassoon notes.'},
+      {word:'Oboe',meaning:'오보에',emoji:'🎶',example:'Oboe has reedy sound.'},
+      {word:'Orchestra',meaning:'오케스트라',emoji:'🎼',example:'Full orchestra concert.'},
+    ],
+    advanced: [
+      {word:'Synthesizer',meaning:'신시사이저',emoji:'🎹',example:'Electronic synthesizer sound.'},
+      {word:'Percussion',meaning:'타악기',emoji:'🥁',example:'Percussion section beats.'},
+      {word:'Harpsichord',meaning:'하프시코드',emoji:'🎹',example:'Baroque harpsichord music.'},
+      {word:'Didgeridoo',meaning:'디저리두',emoji:'🎶',example:'Aboriginal didgeridoo.'},
+      {word:'Xylophone',meaning:'실로폰',emoji:'🎼',example:'Hit xylophone bars.'},
+      {word:'Marimba',meaning:'마림바',emoji:'🎼',example:'Latin marimba rhythms.'},
+      {word:'Harmonica',meaning:'하모니카',emoji:'🎶',example:'Blues harmonica plays.'},
+      {word:'Conductor',meaning:'지휘자',emoji:'🎩',example:'Orchestra conductor leads.'},
+      {word:'Tempo',meaning:'빠르기',emoji:'⏱️',example:'Play at this tempo.'},
+      {word:'Melody',meaning:'멜로디',emoji:'🎵',example:'A beautiful melody.'},
+    ]
+  },
+  clothes: {
+    name:'Clothes', icon:'👕', color:'color-red',
+    beginner: [
+      {word:'Shirt',meaning:'셔츠',emoji:'👕',example:'Wear a clean shirt.'},
+      {word:'Pants',meaning:'바지',emoji:'👖',example:'Blue jeans pants.'},
+      {word:'Shoes',meaning:'신발',emoji:'👟',example:'Tie your shoe laces.'},
+      {word:'Hat',meaning:'모자',emoji:'🎩',example:'Wear a hat outside.'},
+      {word:'Socks',meaning:'양말',emoji:'🧦',example:'Put socks on feet.'},
+      {word:'Dress',meaning:'드레스',emoji:'👗',example:'Pretty pink dress.'},
+      {word:'Jacket',meaning:'재킷',emoji:'🧥',example:'Wear your jacket.'},
+      {word:'Gloves',meaning:'장갑',emoji:'🧤',example:'Warm winter gloves.'},
+      {word:'Scarf',meaning:'스카프',emoji:'🧣',example:'Colorful wool scarf.'},
+      {word:'Uniform',meaning:'교복',emoji:'👔',example:'School uniform rules.'},
+    ],
+    intermediate: [
+      {word:'Sweater',meaning:'스웨터',emoji:'🧶',example:'Cozy wool sweater.'},
+      {word:'Pajamas',meaning:'잠옷',emoji:'😴',example:'Bedtime pajamas.'},
+      {word:'Raincoat',meaning:'우비',emoji:'🌧️',example:'Wear raincoat outside.'},
+      {word:'Swimsuit',meaning:'수영복',emoji:'🏊',example:'Swimsuit for beach.'},
+      {word:'Boots',meaning:'부츠',emoji:'👢',example:'Cowboy leather boots.'},
+      {word:'Sandals',meaning:'샌들',emoji:'👡',example:'Summer sandals.'},
+      {word:'Belt',meaning:'벨트',emoji:'👔',example:'Leather belt buckle.'},
+      {word:'Tie',meaning:'넥타이',emoji:'👔',example:'Formal necktie.'},
+      {word:'Skirt',meaning:'치마',emoji:'👗',example:'Flowy summer skirt.'},
+      {word:'Cardigan',meaning:'가디건',emoji:'🧥',example:'Soft button cardigan.'},
+    ],
+    advanced: [
+      {word:'Tuxedo',meaning:'턱시도',emoji:'🤵',example:'Formal tuxedo suit.'},
+      {word:'Camouflage',meaning:'위장',emoji:'🪖',example:'Camouflage military wear.'},
+      {word:'Cashmere',meaning:'캐시미어',emoji:'🐑',example:'Soft cashmere sweater.'},
+      {word:'Linen',meaning:'린넨',emoji:'🌿',example:'Linen summer shirt.'},
+      {word:'Velvet',meaning:'벨벳',emoji:'💜',example:'Velvet evening gown.'},
+      {word:'Denim',meaning:'데님',emoji:'👖',example:'Classic denim jeans.'},
+      {word:'Couture',meaning:'고급 의상',emoji:'👗',example:'Haute couture fashion.'},
+      {word:'Tailor',meaning:'재단사',emoji:'✂️',example:'Expert clothes tailor.'},
+      {word:'Fabric',meaning:'천',emoji:'🧵',example:'Natural cotton fabric.'},
+      {word:'Vintage',meaning:'빈티지',emoji:'⏰',example:'Vintage style clothes.'},
+    ]
+  },
+  society: {
+    name:'Society', icon:'🏛️', color:'color-blue',
+    beginner: [
+      {word:'School',meaning:'학교',emoji:'🏫',example:'Go to school every day.'},
+      {word:'Hospital',meaning:'병원',emoji:'🏥',example:'Doctor works in hospital.'},
+      {word:'Police',meaning:'경찰',emoji:'👮',example:'Police keep us safe.'},
+      {word:'Fire',meaning:'소방관',emoji:'🚒',example:'Firefighters fight fire.'},
+      {word:'Market',meaning:'시장',emoji:'🏪',example:'Buy food at market.'},
+      {word:'Library',meaning:'도서관',emoji:'📚',example:'Read books in library.'},
+      {word:'Park',meaning:'공원',emoji:'🌳',example:'Play in the park.'},
+      {word:'Bus',meaning:'버스',emoji:'🚌',example:'Take the city bus.'},
+      {word:'Money',meaning:'돈',emoji:'💰',example:'Save your money.'},
+      {word:'Vote',meaning:'투표',emoji:'🗳️',example:'Vote for leaders.'},
+    ],
+    intermediate: [
+      {word:'Community',meaning:'지역사회',emoji:'🏘️',example:'Strong community bond.'},
+      {word:'Government',meaning:'정부',emoji:'🏛️',example:'Government makes laws.'},
+      {word:'Justice',meaning:'정의',emoji:'⚖️',example:'Fight for justice.'},
+      {word:'Volunteer',meaning:'자원봉사',emoji:'🤝',example:'Volunteer at shelter.'},
+      {word:'Environment',meaning:'환경',emoji:'🌍',example:'Protect our environment.'},
+      {word:'Pollution',meaning:'오염',emoji:'🏭',example:'Reduce air pollution.'},
+      {word:'Recycle',meaning:'재활용',emoji:'♻️',example:'Recycle plastic bottles.'},
+      {word:'Tax',meaning:'세금',emoji:'💳',example:'Pay taxes on time.'},
+      {word:'Election',meaning:'선거',emoji:'🗳️',example:'National election day.'},
+      {word:'Equality',meaning:'평등',emoji:'⚖️',example:'Gender equality matters.'},
+    ],
+    advanced: [
+      {word:'Democracy',meaning:'민주주의',emoji:'🗳️',example:'Democracy gives voice.'},
+      {word:'Constitution',meaning:'헌법',emoji:'📜',example:'Rights in constitution.'},
+      {word:'Legislature',meaning:'입법부',emoji:'🏛️',example:'Legislature makes laws.'},
+      {word:'Diplomacy',meaning:'외교',emoji:'🤝',example:'Diplomacy prevents wars.'},
+      {word:'Jurisdiction',meaning:'관할권',emoji:'⚖️',example:'Under police jurisdiction.'},
+      {word:'Sovereignty',meaning:'주권',emoji:'👑',example:'National sovereignty.'},
+      {word:'Globalization',meaning:'세계화',emoji:'🌐',example:'Effects of globalization.'},
+      {word:'Infrastructure',meaning:'기반시설',emoji:'🏗️',example:'Build better infrastructure.'},
+      {word:'Bureaucracy',meaning:'관료주의',emoji:'📋',example:'Complex bureaucracy.'},
+      {word:'Propaganda',meaning:'선전',emoji:'📢',example:'Media propaganda.'},
+    ]
+  },
+  health: {
+    name:'Health', icon:'🏥', color:'color-green',
+    beginner: [
+      {word:'Doctor',meaning:'의사',emoji:'👨‍⚕️',example:'See a doctor when sick.'},
+      {word:'Medicine',meaning:'약',emoji:'💊',example:'Take your medicine.'},
+      {word:'Sick',meaning:'아픈',emoji:'🤒',example:'I feel sick today.'},
+      {word:'Healthy',meaning:'건강한',emoji:'💪',example:'Eat healthy foods.'},
+      {word:'Sleep',meaning:'잠',emoji:'😴',example:'Get enough sleep.'},
+      {word:'Exercise',meaning:'운동',emoji:'🏃',example:'Exercise every day.'},
+      {word:'Wash',meaning:'씻다',emoji:'🧼',example:'Wash your hands often.'},
+      {word:'Dentist',meaning:'치과의사',emoji:'🦷',example:'Visit the dentist.'},
+      {word:'Nurse',meaning:'간호사',emoji:'👩‍⚕️',example:'Nurse helps patients.'},
+      {word:'Bandage',meaning:'붕대',emoji:'🩹',example:'Put a bandage on.'},
+    ],
+    intermediate: [
+      {word:'Fever',meaning:'열',emoji:'🤒',example:'High fever treatment.'},
+      {word:'Allergy',meaning:'알레르기',emoji:'🤧',example:'Peanut allergy reaction.'},
+      {word:'Vitamin',meaning:'비타민',emoji:'💊',example:'Take daily vitamins.'},
+      {word:'Surgery',meaning:'수술',emoji:'🔪',example:'Heart surgery success.'},
+      {word:'Therapy',meaning:'치료',emoji:'🛋️',example:'Physical therapy helps.'},
+      {word:'Injection',meaning:'주사',emoji:'💉',example:'Flu injection season.'},
+      {word:'Calcium',meaning:'칼슘',emoji:'🦴',example:'Milk has calcium.'},
+      {word:'Protein',meaning:'단백질',emoji:'🥩',example:'Protein builds muscles.'},
+      {word:'Hygiene',meaning:'위생',emoji:'🧼',example:'Practice good hygiene.'},
+      {word:'Vaccine',meaning:'백신',emoji:'💉',example:'COVID vaccine rollout.'},
+    ],
+    advanced: [
+      {word:'Metabolism',meaning:'신진대사',emoji:'⚡',example:'Fast metabolism helps.'},
+      {word:'Cardiovascular',meaning:'심혈관',emoji:'❤️',example:'Cardiovascular exercise.'},
+      {word:'Antibiotic',meaning:'항생제',emoji:'💊',example:'Take the antibiotic.'},
+      {word:'Inflammation',meaning:'염증',emoji:'🔴',example:'Reduce inflammation.'},
+      {word:'Symptom',meaning:'증상',emoji:'🤒',example:'Common cold symptoms.'},
+      {word:'Diagnosis',meaning:'진단',emoji:'🔬',example:'Doctor\'s diagnosis.'},
+      {word:'Chronic',meaning:'만성',emoji:'📅',example:'Chronic back pain.'},
+      {word:'Immunity',meaning:'면역력',emoji:'🛡️',example:'Build your immunity.'},
+      {word:'Nutrition',meaning:'영양',emoji:'🥗',example:'Balanced nutrition plan.'},
+      {word:'Prevention',meaning:'예방',emoji:'✅',example:'Disease prevention.'},
+    ]
+  }
+};
+
+/* ============================================================
+   PET / CHARACTER DATA
+============================================================ */
+const PETS = [
+  {id:'cat',emoji:'🐱',name:'Cat',color:'#FFB347'},
+  {id:'dog',emoji:'🐶',name:'Dog',color:'#8B6914'},
+  {id:'panda',emoji:'🐼',name:'Panda',color:'#808080'},
+  {id:'bunny',emoji:'🐰',name:'Bunny',color:'#FFB6C1'},
+  {id:'bear',emoji:'🐻',name:'Bear',color:'#8B4513'},
+];
+
+const ACCESSORIES = {
+  hats: [
+    {id:'none',emoji:'',name:'None',price:0},
+    {id:'cap',emoji:'🧢',name:'Cap',price:50},
+    {id:'crown',emoji:'👑',name:'Crown',price:200},
+    {id:'wizard',emoji:'🎩',name:'Wizard',price:150},
+    {id:'santa',emoji:'🎅',name:'Santa Hat',price:100},
+    {id:'helmet',emoji:'⛑️',name:'Helmet',price:80},
+  ],
+  glasses: [
+    {id:'none',emoji:'',name:'None',price:0},
+    {id:'sunglasses',emoji:'😎',name:'Sunglasses',price:60},
+    {id:'goggles',emoji:'🥽',name:'Goggles',price:80},
+    {id:'glasses',emoji:'🤓',name:'Glasses',price:40},
+  ],
+  clothes: [
+    {id:'none',emoji:'',name:'None',price:0},
+    {id:'tshirt',emoji:'👕',name:'T-Shirt',price:70},
+    {id:'suit',emoji:'👔',name:'Suit',price:180},
+    {id:'dress',emoji:'👗',name:'Dress',price:120},
+    {id:'superhero',emoji:'🦸',name:'Superhero',price:250},
+    {id:'scientist',emoji:'🥼',name:'Lab Coat',price:160},
+  ]
+};
+
+/* ============================================================
+   ONBOARDING
+============================================================ */
+const OB_STEPS_DATA = [
+  { title:"What's your name?", bubble:"Nice to meet you! What should I call you?", type:'name' },
+  { title:"How old are you?", bubble:"Almost done! When were you born?", type:'age',
+    options:[{label:'8-9 years old',icon:'🌱',val:'8-9'},{label:'10-11 years old',icon:'🌿',val:'10-11'},{label:'12+ years old',icon:'🌳',val:'12+'}] },
+  { title:"Are you a...?", bubble:"Tell me about yourself!", type:'gender',
+    options:[{label:'Boy',icon:'👦',val:'boy'},{label:'Girl',icon:'👧',val:'girl'},{label:'Other',icon:'🌈',val:'other'}] },
+  { title:"Choose your pet!", bubble:"Pick your learning buddy!", type:'pet' },
+];
+
+function renderOnboard() {
+  const step = state.obStep;
+  const data = OB_STEPS_DATA[step];
+  const total = OB_STEPS_DATA.length;
+  document.getElementById('ob-bubble').textContent = data.bubble;
+  // dots
+  const dots = Array.from({length:total}, (_,i) =>
+    `<div class="ob-dot ${i<=step?'active':''}"></div>`).join('');
+  document.getElementById('ob-progress').innerHTML = dots;
+  let html = `<div class="ob-title">${data.title}</div>`;
+  if(data.type === 'name') {
+    html += `<input type="text" id="ob-name-input" style="width:100%;padding:14px 18px;border:2.5px solid #E2E8F0;border-radius:12px;font-size:16px;font-weight:700;margin-bottom:8px;font-family:inherit;" placeholder="Enter your name..." value="${state.user.name||''}"/>`;
+  } else if(data.type === 'pet') {
+    html += `<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">`;
+    PETS.forEach(p => {
+      const sel = state.pet.type===p.id;
+      html += `<div class="ob-option ${sel?'selected':''}" onclick="selectPet('${p.id}')" style="cursor:pointer;">
+        <span class="ob-icon">${p.emoji}</span>${p.name}
+      </div>`;
+    });
+    html += `</div>`;
+  } else if(data.options) {
+    const cls = data.options.length===3?'grid3':'grid2';
+    html += `<div class="ob-options ${cls}">`;
+    data.options.forEach(o => {
+      const sel = (data.type==='age'&&state.user.age===o.val)||(data.type==='gender'&&state.user.gender===o.val);
+      html += `<div class="ob-option ${sel?'selected':''}" onclick="obSelect('${data.type}','${o.val}')">
+        <span class="ob-icon">${o.icon}</span>${o.label}
+      </div>`;
+    });
+    html += `</div>`;
+  }
+  document.getElementById('ob-content').innerHTML = html;
+  const nextBtn = document.getElementById('ob-next-btn');
+  nextBtn.textContent = step < total-1 ? 'Next ➡️' : 'Let\'s Go! 🚀';
+}
+
+function obSelect(type, val) {
+  if(type==='age') state.user.age = val;
+  if(type==='gender') state.user.gender = val;
+  renderOnboard();
+}
+
+function selectPet(id) {
+  state.pet.type = id;
+  renderOnboard();
+}
+
+function obNext() {
+  const step = state.obStep;
+  if(step===0) {
+    const inp = document.getElementById('ob-name-input');
+    if(inp) state.user.name = inp.value.trim() || 'Student';
+  }
+  if(state.obStep < OB_STEPS_DATA.length-1) {
+    state.obStep++;
+    renderOnboard();
+  } else {
+    showApp();
+  }
+}
+
+/* ============================================================
+   APP INIT
+============================================================ */
+function doLogin() {
+  showScreen('screen-onboard');
+  state.obStep = 0;
+  renderOnboard();
+}
+
+function showApp() {
+  showScreen('screen-app');
+  updateHeader();
+  showTab('home');
+}
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function updateHeader() {
+  const pet = PETS.find(p=>p.id===state.pet.type);
+  document.getElementById('header-pet').textContent = pet ? pet.emoji : '🐱';
+  document.getElementById('header-name').textContent = state.user.name || 'Student';
+  document.getElementById('header-coins').textContent = state.coins;
+  const lvl = Math.floor(state.xp / 100) + 1;
+  document.getElementById('header-level').textContent = `Level ${lvl} Explorer`;
+}
+
+/* ============================================================
+   TAB NAVIGATION
+============================================================ */
+function showTab(tab) {
+  state.currentTab = tab;
+  document.querySelectorAll('.nav-btn').forEach((btn,i) => {
+    const tabs = ['home','vocab','math','agent','profile'];
+    btn.classList.toggle('active', tabs[i]===tab);
+  });
+  const content = document.getElementById('app-content');
+  if(tab==='home') content.innerHTML = renderHome();
+  else if(tab==='vocab') content.innerHTML = renderVocab();
+  else if(tab==='math') { content.innerHTML = renderMath(); initMathTab(); }
+  else if(tab==='flags') content.innerHTML = renderFlags();
+  else if(tab==='agent') { content.innerHTML = renderAgent(); initAgent(); }
+  else if(tab==='pet') content.innerHTML = renderPet();
+  else if(tab==='profile') content.innerHTML = renderProfile();
+  updateHeader();
+}
+
+/* ============================================================
+   HOME TAB
+============================================================ */
+function renderHome() {
+  const lvl = Math.floor(state.xp / 100) + 1;
+  const xpPct = (state.xp % 100);
+  const pet = PETS.find(p=>p.id===state.pet.type);
+  const totalStudied = Object.values(state.studiedWords).reduce((a,b)=>a+b,0);
+  return `
+  <div class="home-welcome">
+    <h2>Hello, ${state.user.name}! ${pet?pet.emoji:'🐱'}</h2>
+    <p>Ready to learn something amazing today?</p>
+    <div class="xp-bar-wrap"><div class="xp-bar" style="width:${xpPct}%"></div></div>
+    <div class="xp-label">Level ${lvl} · ${state.xp} XP · ${100-xpPct} XP to next level</div>
+  </div>
+  <div class="streak-card">
+    <div class="streak-num">🔥 ${state.streak}</div>
+    <div class="streak-text"><h3>Day Streak!</h3><p>Keep it up every day!</p></div>
+  </div>
+  <div class="section-title">📚 What do you want to learn?</div>
+  <div class="subject-grid">
+    <div class="subject-card color-red" onclick="showTab('vocab')">
+      <span class="card-icon">🔤</span>
+      <div class="card-title">English Words</div>
+      <div class="card-sub">${totalStudied} words learned</div>
+    </div>
+    <div class="subject-card color-orange" onclick="showTab('math')">
+      <span class="card-icon">🧮</span>
+      <div class="card-title">Math Practice</div>
+      <div class="card-sub">Grades 1–3 · Add to Multiply</div>
+    </div>
+    <div class="subject-card color-purple" onclick="showTab('agent')">
+      <span class="card-icon">🤖</span>
+      <div class="card-title">AI Agent</div>
+      <div class="card-sub">Ask anything · Wolfram powered</div>
+    </div>
+    <div class="subject-card color-blue" onclick="showTab('flags')">
+      <span class="card-icon">🌍</span>
+      <div class="card-title">World Flags</div>
+      <div class="card-sub">All countries!</div>
+    </div>
+  </div>
+  <div class="section-title">🏅 My Medals</div>
+  <div class="medals-row">
+    ${state.medals.length ? state.medals.slice(-6).map(m=>`
+      <div class="medal-badge">
+        <div class="medal-icon">${m.medal==='gold'?'🥇':m.medal==='silver'?'🥈':'🥉'}</div>
+        <div class="medal-name">${m.category}</div>
+      </div>`).join('') : '<div class="medal-badge"><div class="medal-icon">🔒</div><div class="medal-name">No medals yet</div></div>'}
+    <div class="medal-badge" onclick="showTab('vocab')"><div class="medal-icon">➕</div><div class="medal-name">Earn more!</div></div>
+  </div>`;
+}
+
+/* ============================================================
+   VOCAB TAB
+============================================================ */
+function renderVocab() {
+  const level = state.quiz.level;
+  return `
+  <div class="vocab-hero">
+    <h2>📚 English Words</h2>
+    <p>Choose a category and start learning!</p>
+  </div>
+  <div class="level-tabs">
+    <button class="level-tab ${level==='beginner'?'active':''}" onclick="setVocabLevel('beginner')">🌱 Beginner</button>
+    <button class="level-tab ${level==='intermediate'?'active':''}" onclick="setVocabLevel('intermediate')">🌿 Intermediate</button>
+    <button class="level-tab ${level==='advanced'?'active':''}" onclick="setVocabLevel('advanced')">🌳 Advanced</button>
+  </div>
+  <div class="category-list">
+    ${Object.entries(VOCAB_CATEGORIES).map(([key, cat]) => {
+      const words = cat[level] || [];
+      const studied = state.studiedWords[key+level] || 0;
+      const pct = words.length ? Math.round(studied/words.length*100) : 0;
+      return `
+      <div class="category-card" style="border-left-color:var(--${cat.color.replace('color-','')},var(--primary))" onclick="startFlashcards('${key}')">
+        <span class="cat-icon">${cat.icon}</span>
+        <div class="cat-info">
+          <div class="cat-name">${cat.name}</div>
+          <div class="cat-sub">${words.length} words · ${pct}% done</div>
+          <div class="cat-progress"><div class="cat-progress-fill" style="width:${pct}%"></div></div>
+        </div>
+        <span class="cat-arrow">›</span>
+      </div>`;
+    }).join('')}
+  </div>`;
+}
+
+function setVocabLevel(lvl) {
+  state.quiz.level = lvl;
+  showTab('vocab');
+}
+
+/* ============================================================
+   FLASHCARD LEARNING
+============================================================ */
+function startFlashcards(category) {
+  const words = VOCAB_CATEGORIES[category][state.quiz.level] || [];
+  state.flashcard.words = words;
+  state.flashcard.idx = 0;
+  state.quiz.category = category;
+  renderFlashcardScreen();
+}
+
+function renderFlashcardScreen() {
+  const { words, idx } = state.flashcard;
+  if(!words.length) return;
+  const w = words[idx];
+  const pct = Math.round((idx+1)/words.length*100);
+  const cat = VOCAB_CATEGORIES[state.quiz.category];
+  document.getElementById('app-content').innerHTML = `
+  <div class="flashcard-screen">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+      <button style="background:none;border:none;font-size:24px;cursor:pointer;" onclick="showTab('vocab')">‹</button>
+      <span style="font-weight:800;font-size:14px;color:var(--text-light)">${idx+1} / ${words.length}</span>
+      <button style="background:var(--purple);color:white;padding:8px 14px;border-radius:50px;font-size:13px;font-weight:700;" onclick="startQuiz('${state.quiz.category}','mcq')">Quiz!</button>
+    </div>
+    <div class="fc-progress"><div class="fc-progress-bar" style="width:${pct}%"></div></div>
+    <div class="flashcard-container">
+      <div class="flashcard" id="main-flashcard" onclick="flipCard()">
+        <div class="fc-front">
+          <span class="fc-word-emoji">${w.emoji}</span>
+          <div class="fc-word">${w.word}</div>
+          <div class="fc-hint">Tap to see meaning 👆</div>
+        </div>
+        <div class="fc-back">
+          <span class="fc-word-emoji">${w.emoji}</span>
+          <div class="fc-meaning">${w.meaning}</div>
+          <div class="fc-english">${w.word}</div>
+          <div class="fc-example">"${w.example}"</div>
+          <button class="speak-btn" onclick="speak('${w.word}',event)">🔊 Listen</button>
+        </div>
+      </div>
+    </div>
+    <div class="fc-controls">
+      <button class="fc-btn fc-btn-prev" onclick="fcPrev()">‹ Prev</button>
+      <span class="fc-counter">${cat.icon} ${cat.name}</span>
+      <button class="fc-btn fc-btn-next" onclick="fcNext()">Next ›</button>
+    </div>
+    ${idx === words.length-1 ? `<div style="margin-top:16px;text-align:center;"><button class="fc-btn-quiz" onclick="startQuiz('${state.quiz.category}','mcq')">🎮 Take the Quiz!</button></div>` : ''}
+  </div>`;
+}
+
+function flipCard() {
+  document.getElementById('main-flashcard')?.classList.toggle('flipped');
+}
+
+function fcNext() {
+  const words = state.flashcard.words;
+  if(state.flashcard.idx < words.length-1) {
+    state.flashcard.idx++;
+    // mark as studied
+    const key = state.quiz.category + state.quiz.level;
+    state.studiedWords[key] = (state.studiedWords[key]||0) + 1;
+    renderFlashcardScreen();
+  }
+}
+
+function fcPrev() {
+  if(state.flashcard.idx > 0) { state.flashcard.idx--; renderFlashcardScreen(); }
+}
+
+/* ============================================================
+   QUIZ SYSTEM
+============================================================ */
+function startQuiz(category, type) {
+  const words = VOCAB_CATEGORIES[category][state.quiz.level] || [];
+  const wrongOnly = state.quiz.retryWrong;
+  const pool = wrongOnly && state.quiz.wrong.length ? state.quiz.wrong : [...words];
+  state.quiz.words = shuffle(pool);
+  state.quiz.idx = 0;
+  state.quiz.score = 0;
+  state.quiz.wrong = [];
+  state.quiz.type = type || 'mcq';
+  state.quiz.category = category;
+  state.quiz.mode = 'vocab';
+  state.quiz.retryWrong = false;
+  renderQuizQuestion();
+}
+
+function startFlagQuiz(type, continent) {
+  const countries = continent ? ALL_COUNTRIES[continent] : Object.values(ALL_COUNTRIES).flat();
+  state.quiz.words = shuffle(countries).slice(0, 15).map(c => ({
+    word: c.name, meaning: c.capital, emoji: c.flag, example: `Capital: ${c.capital}`,
+    isFlag: true, country: c
+  }));
+  state.quiz.idx = 0;
+  state.quiz.score = 0;
+  state.quiz.wrong = [];
+  state.quiz.type = type || 'mcq';
+  state.quiz.mode = 'flags';
+  state.quiz.retryWrong = false;
+  renderQuizQuestion();
+}
+
+function renderQuizQuestion() {
+  const { words, idx, score, type } = state.quiz;
+  if(idx >= words.length) { showQuizResult(); return; }
+  const w = words[idx];
+  const pct = Math.round(idx/words.length*100);
+  if(type==='matching') { renderMatchingGame(); return; }
+  if(type==='car') { renderCarGame(); return; }
+  const allWords = type==='mcq' ? (state.quiz.mode==='flags' ? Object.values(ALL_COUNTRIES).flat().map(c=>({word:c.name,emoji:c.flag})) : (VOCAB_CATEGORIES[state.quiz.category]?.[state.quiz.level]||[])) : [];
+  let options = [];
+  if(type==='mcq') {
+    const others = shuffle(allWords.filter(x=>x.word!==w.word)).slice(0,3);
+    options = shuffle([w,...others]);
+  }
+  document.getElementById('app-content').innerHTML = `
+  <div>
+    <div class="quiz-header">
+      <div class="quiz-meta">
+        <div class="quiz-score">Score: ${score}/${words.length}</div>
+        <div class="quiz-type-badge">${type==='mcq'?'Multiple Choice':type==='typing'?'Typing':'Quiz'}</div>
+        <button style="background:none;border:none;font-size:22px;cursor:pointer;" onclick="showTab('vocab')">✕</button>
+      </div>
+      <div class="fc-progress"><div class="fc-progress-bar" style="width:${pct}%"></div></div>
+    </div>
+    <div class="quiz-body">
+      <div class="quiz-question-card">
+        <span class="quiz-question-emoji">${w.emoji}</span>
+        <div class="quiz-question-text">${state.quiz.mode==='flags'?'Which country is this flag?':w.word}</div>
+        <div class="quiz-question-sub">${state.quiz.mode==='flags'?w.word:'What does this mean in Korean?'}</div>
+      </div>
+      ${type==='mcq' ? `
+      <div class="quiz-options">
+        ${options.map(o=>`
+          <button class="quiz-option" onclick="checkAnswer('${o.word.replace(/'/g,"\\'")}','${w.word.replace(/'/g,"\\'")}')" data-val="${o.word}">
+            ${o.emoji||''} ${state.quiz.mode==='flags'?o.word:o.meaning||o.word}
+          </button>`).join('')}
+      </div>` : `
+      <div style="margin-bottom:16px;">
+        <input class="quiz-input" id="typing-input" placeholder="Type the ${state.quiz.mode==='flags'?'country name':'Korean meaning'}..." onkeydown="if(event.key==='Enter')submitTyping('${w.word.replace(/'/g,"\\'")}','${w.meaning?.replace(/'/g,"\\'") || w.word}')"/>
+        <button class="quiz-submit-btn" onclick="submitTyping('${w.word.replace(/'/g,"\\'")}','${w.meaning?.replace(/'/g,"\\'") || w.word}')">✓ Check</button>
+      </div>`}
+      <div class="quiz-feedback" id="quiz-feedback"></div>
+      <div style="display:flex;gap:10px;justify-content:center;margin-top:8px;">
+        <button style="background:#F0F0F0;color:var(--text);padding:10px 20px;border-radius:50px;font-size:14px;font-weight:700;" onclick="switchQuizType('mcq')">📋 MCQ</button>
+        <button style="background:#F0F0F0;color:var(--text);padding:10px 20px;border-radius:50px;font-size:14px;font-weight:700;" onclick="switchQuizType('typing')">⌨️ Type</button>
+        <button style="background:#F0F0F0;color:var(--text);padding:10px 20px;border-radius:50px;font-size:14px;font-weight:700;" onclick="switchQuizType('matching')">🔗 Match</button>
+        <button style="background:#F0F0F0;color:var(--text);padding:10px 20px;border-radius:50px;font-size:14px;font-weight:700;" onclick="switchQuizType('car')">🏎️ Car</button>
+      </div>
+    </div>
+  </div>`;
+  if(type==='typing') setTimeout(()=>document.getElementById('typing-input')?.focus(),100);
+}
+
+function switchQuizType(type) {
+  state.quiz.type = type;
+  renderQuizQuestion();
+}
+
+function checkAnswer(chosen, correct) {
+  const isCorrect = chosen === correct;
+  document.querySelectorAll('.quiz-option').forEach(btn => {
+    btn.disabled = true;
+    if(btn.dataset.val===correct) btn.classList.add('correct');
+    if(btn.dataset.val===chosen && !isCorrect) btn.classList.add('wrong');
+  });
+  const fb = document.getElementById('quiz-feedback');
+  fb.className = `quiz-feedback show ${isCorrect?'correct':'wrong'}`;
+  fb.textContent = isCorrect ? '🎉 Correct! Great job!' : `❌ Wrong! The answer is: ${correct}`;
+  if(!isCorrect) state.quiz.wrong.push(state.quiz.words[state.quiz.idx]);
+  else state.quiz.score++;
+  if(isCorrect) launchMiniConfetti();
+  setTimeout(() => { state.quiz.idx++; renderQuizQuestion(); }, 1400);
+}
+
+function submitTyping(word, meaning) {
+  const inp = document.getElementById('typing-input');
+  if(!inp) return;
+  const val = inp.value.trim().toLowerCase();
+  const correct = meaning.toLowerCase().split('(')[0].trim();
+  const isCorrect = val === correct || val === word.toLowerCase() || correct.includes(val) && val.length > 2;
+  const fb = document.getElementById('quiz-feedback');
+  fb.className = `quiz-feedback show ${isCorrect?'correct':'wrong'}`;
+  fb.textContent = isCorrect ? '🎉 Correct!' : `❌ Wrong! Answer: ${meaning} (${word})`;
+  inp.disabled = true;
+  document.querySelector('.quiz-submit-btn').disabled = true;
+  if(!isCorrect) state.quiz.wrong.push(state.quiz.words[state.quiz.idx]);
+  else state.quiz.score++;
+  if(isCorrect) launchMiniConfetti();
+  setTimeout(() => { state.quiz.idx++; renderQuizQuestion(); }, 1500);
+}
+
+/* ============================================================
+   MATCHING GAME
+============================================================ */
+let matchState = { selected: null, matched: [], wrong: [] };
+
+function renderMatchingGame() {
+  const { words, idx } = state.quiz;
+  const batch = words.slice(idx, idx+6);
+  if(!batch.length) { showQuizResult(); return; }
+  matchState = { selected: null, matched: [], wrong: [], batch, quizIdx: idx };
+  renderMatchBoard();
+}
+
+function renderMatchBoard() {
+  const { batch } = matchState;
+  const lefts = shuffle([...batch]).map(w => ({...w, side:'left'}));
+  const rights = shuffle([...batch]).map(w => ({...w, side:'right'}));
+  matchState.lefts = lefts; matchState.rights = rights;
+  let html = `
+  <div class="quiz-header">
+    <div class="quiz-meta">
+      <div class="quiz-score">Score: ${state.quiz.score}/${state.quiz.words.length}</div>
+      <div class="quiz-type-badge">Matching Game 🔗</div>
+      <button style="background:none;border:none;font-size:22px;cursor:pointer;" onclick="showTab('vocab')">✕</button>
+    </div>
+  </div>
+  <div class="quiz-body">
+    <div style="font-weight:800;font-size:16px;margin-bottom:14px;text-align:center;">Match the pairs! 🎯</div>
+    <div class="matching-grid">
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        ${lefts.map((w,i)=>`
+        <div class="match-item ${matchState.matched.find(m=>m.word===w.word)?'matched':''}" id="match-l-${i}" onclick="matchClick('left',${i})">
+          <span class="match-emoji">${w.emoji}</span>
+          <span>${w.word}</span>
+        </div>`).join('')}
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        ${rights.map((w,i)=>`
+        <div class="match-item ${matchState.matched.find(m=>m.word===w.word)?'matched':''}" id="match-r-${i}" onclick="matchClick('right',${i})">
+          <span>${state.quiz.mode==='flags'?w.meaning||w.word:w.meaning||w.word}</span>
+        </div>`).join('')}
+      </div>
+    </div>
+    <div class="quiz-feedback" id="quiz-feedback" style="margin-top:12px;"></div>
+  </div>`;
+  document.getElementById('app-content').innerHTML = html;
+}
+
+function matchClick(side, idx) {
+  if(!matchState.selected) {
+    matchState.selected = {side, idx};
+    const el = document.getElementById(`match-${side[0]}-${idx}`);
+    el?.classList.add('selected');
+  } else {
+    const prev = matchState.selected;
+    if(prev.side === side) {
+      document.getElementById(`match-${prev.side[0]}-${prev.idx}`)?.classList.remove('selected');
+      matchState.selected = {side, idx};
+      document.getElementById(`match-${side[0]}-${idx}`)?.classList.add('selected');
+      return;
+    }
+    const leftIdx = side==='right' ? prev.idx : idx;
+    const rightIdx = side==='right' ? idx : prev.idx;
+    const leftWord = matchState.lefts[leftIdx];
+    const rightWord = matchState.rights[rightIdx];
+    const isMatch = leftWord.word === rightWord.word;
+    const lEl = document.getElementById(`match-l-${leftIdx}`);
+    const rEl = document.getElementById(`match-r-${rightIdx}`);
+    if(isMatch) {
+      lEl?.classList.add('matched'); rEl?.classList.add('matched');
+      lEl?.classList.remove('selected');
+      matchState.matched.push(leftWord);
+      state.quiz.score++;
+      const fb = document.getElementById('quiz-feedback');
+      if(fb) { fb.className='quiz-feedback show correct'; fb.textContent='✓ Match!'; }
+      if(matchState.matched.length === matchState.batch.length) {
+        state.quiz.idx += matchState.batch.length;
+        setTimeout(() => renderQuizQuestion(), 800);
+      }
+    } else {
+      lEl?.classList.add('wrong-match'); rEl?.classList.add('wrong-match');
+      lEl?.classList.remove('selected');
+      state.quiz.wrong.push(leftWord);
+      const fb = document.getElementById('quiz-feedback');
+      if(fb) { fb.className='quiz-feedback show wrong'; fb.textContent=`✗ Not a match! ${leftWord.word} ≠ ${rightWord.meaning||rightWord.word}`; }
+      setTimeout(() => { lEl?.classList.remove('wrong-match'); rEl?.classList.remove('wrong-match'); if(fb)fb.className='quiz-feedback'; }, 1000);
+    }
+    matchState.selected = null;
+  }
+}
+
+/* ============================================================
+   CAR GAME
+============================================================ */
+let carGameState = { pos: 0 };
+
+function renderCarGame() {
+  const { words, idx, score } = state.quiz;
+  if(idx >= words.length) { showQuizResult(); return; }
+  const w = words[idx];
+  const allWords = state.quiz.mode==='flags' ? Object.values(ALL_COUNTRIES).flat().map(c=>({word:c.name,emoji:c.flag,meaning:c.capital})) : (VOCAB_CATEGORIES[state.quiz.category]?.[state.quiz.level]||[]);
+  const others = shuffle(allWords.filter(x=>x.word!==w.word)).slice(0,3);
+  const options = shuffle([w,...others]);
+  const carPct = Math.round(idx/words.length*100);
+  const pet = PETS.find(p=>p.id===state.pet.type);
+  document.getElementById('app-content').innerHTML = `
+  <div class="quiz-header">
+    <div class="quiz-meta">
+      <div class="quiz-score">🏎️ Race: ${score}/${words.length}</div>
+      <div class="quiz-type-badge">Car Race Game!</div>
+      <button style="background:none;border:none;font-size:22px;cursor:pointer;" onclick="showTab('vocab')">✕</button>
+    </div>
+  </div>
+  <div class="quiz-body">
+    <div class="car-game">
+      <div class="car-road">
+        <div class="car-emoji" style="left:${carPct}%">${pet?pet.emoji:'🏎️'}</div>
+        <div class="car-finish">🏁</div>
+      </div>
+      <div class="car-progress-text">${idx+1}/${words.length} questions • Go go go! 🚀</div>
+      <div class="car-question">
+        <div class="cq-emoji">${w.emoji}</div>
+        <div class="cq-word">${w.word}</div>
+      </div>
+      <div class="race-opts">
+        ${options.map(o=>`
+        <button class="race-btn" onclick="carAnswer('${o.word.replace(/'/g,"\\'")}','${w.word.replace(/'/g,"\\'")}',this)">
+          ${o.emoji||''} ${state.quiz.mode==='flags'?o.word:o.meaning||o.word}
+        </button>`).join('')}
+      </div>
+      <div class="quiz-feedback" id="quiz-feedback" style="margin-top:12px;"></div>
+    </div>
+  </div>`;
+}
+
+function carAnswer(chosen, correct, btn) {
+  document.querySelectorAll('.race-btn').forEach(b=>b.disabled=true);
+  const isCorrect = chosen === correct;
+  btn.classList.add(isCorrect?'correct':'wrong');
+  if(!isCorrect) {
+    document.querySelectorAll('.race-btn').forEach(b=>{
+      if(b.textContent.trim().includes(correct.slice(0,5))) b.classList.add('correct');
+    });
+  }
+  const fb = document.getElementById('quiz-feedback');
+  if(fb) { fb.className=`quiz-feedback show ${isCorrect?'correct':'wrong'}`; fb.textContent = isCorrect?'🎉 Correct! ZOOM! 🏎️💨':`❌ Wrong! Answer: ${correct}`; }
+  if(!isCorrect) state.quiz.wrong.push(state.quiz.words[state.quiz.idx]);
+  else { state.quiz.score++; launchMiniConfetti(); }
+  setTimeout(()=>{ state.quiz.idx++; renderCarGame(); }, 1400);
+}
+
+/* ============================================================
+   QUIZ RESULT
+============================================================ */
+function showQuizResult() {
+  const { score, words, wrong, category, mode } = state.quiz;
+  const total = words.length;
+  const pct = total ? Math.round(score/total*100) : 0;
+  const medal = pct>=90 ? 'gold' : pct>=70 ? 'silver' : 'bronze';
+  const medalEmoji = medal==='gold'?'🥇':medal==='silver'?'🥈':'🥉';
+  const xpEarned = score * 10;
+  state.xp += xpEarned;
+  state.coins += score * 5;
+  if(category) {
+    state.medals = state.medals.filter(m=>m.category!==category);
+    state.medals.push({category, medal, score, total});
+  }
+  if(pct>=90) launchConfetti();
+  updateHeader();
+  document.getElementById('app-content').innerHTML = `
+  <div class="quiz-result">
+    <span class="result-medal">${medalEmoji}</span>
+    <div class="result-title">${medal==='gold'?'Perfect!':medal==='silver'?'Great Job!':'Keep Trying!'}</div>
+    <div class="result-score">${score} out of ${total} correct (${pct}%)</div>
+    <div class="result-stats">
+      <div class="result-stat"><div class="rs-num">+${xpEarned}</div><div class="rs-label">XP Earned</div></div>
+      <div class="result-stat"><div class="rs-num">+${score*5}🪙</div><div class="rs-label">Coins</div></div>
+      <div class="result-stat"><div class="rs-num">${pct}%</div><div class="rs-label">Accuracy</div></div>
+    </div>
+    ${wrong.length ? `
+    <div class="wrong-answers-list">
+      <h3>❌ Words to review (${wrong.length}):</h3>
+      ${wrong.map(w=>`<div class="wrong-answer-item"><span style="font-size:20px">${w.emoji}</span><span><strong>${w.word}</strong> → ${w.meaning||''}</span></div>`).join('')}
+    </div>` : ''}
+    <div class="result-btns">
+      ${wrong.length ? `<button class="btn-retry-wrong" onclick="retryWrong()">🔄 Retry Wrong Answers (${wrong.length})</button>` : ''}
+      <button class="btn-retry" onclick="startQuiz('${category}','mcq')">🎮 Play Again</button>
+      <button class="btn-home-result" onclick="showTab('${mode==='flags'?'flags':'vocab'}')">← Back</button>
+    </div>
+  </div>`;
+}
+
+function retryWrong() {
+  state.quiz.retryWrong = true;
+  const wrong = [...state.quiz.wrong];
+  state.quiz.words = shuffle(wrong);
+  state.quiz.idx = 0;
+  state.quiz.score = 0;
+  state.quiz.wrong = [];
+  renderQuizQuestion();
+}
+
+/* ============================================================
+   FLAGS TAB
+============================================================ */
+function renderFlags() {
+  const continents = Object.keys(ALL_COUNTRIES);
+  const activeCont = state.flags.continent || 'Asia';
+  const countries = ALL_COUNTRIES[activeCont] || [];
+  return `
+  <div style="margin-bottom:16px;">
+    <h2 style="font-family:var(--font-title);font-size:22px;margin-bottom:8px;">🌍 World Flags</h2>
+    <div class="search-bar">
+      <span class="search-icon">🔍</span>
+      <input type="text" placeholder="Search any country..." oninput="searchCountry(this.value)" id="country-search"/>
+    </div>
+    <div id="search-results" class="search-results"></div>
+  </div>
+  <div class="continent-tabs">
+    ${continents.map(c=>`
+    <button class="cont-tab ${c===activeCont?'active':''}" onclick="selectContinent('${c}')">${c}</button>`).join('')}
+  </div>
+  <div style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;">
+    <button style="background:var(--primary);color:white;padding:10px 16px;border-radius:50px;font-size:13px;font-weight:700;" onclick="startFlagQuiz('mcq','${activeCont}')">🎮 Flag Quiz</button>
+    <button style="background:var(--secondary);color:white;padding:10px 16px;border-radius:50px;font-size:13px;font-weight:700;" onclick="startFlagQuiz('typing','${activeCont}')">⌨️ Type Quiz</button>
+    <button style="background:var(--purple);color:white;padding:10px 16px;border-radius:50px;font-size:13px;font-weight:700;" onclick="startFlagQuiz('matching','${activeCont}')">🔗 Match</button>
+  </div>
+  <div class="flags-grid">
+    ${countries.map(c=>`
+    <div class="flag-card ${state.studiedFlags[c.code]?'studied':''}" onclick="showCountry('${c.code}')">
+      <span class="flag-emoji">${c.flag}</span>
+      <div class="flag-name">${c.name}</div>
+      <div class="flag-capital">📍 ${c.capital}</div>
+    </div>`).join('')}
+  </div>`;
+}
+
+function selectContinent(cont) {
+  state.flags.continent = cont;
+  showTab('flags');
+}
+
+function searchCountry(query) {
+  const resultsEl = document.getElementById('search-results');
+  if(!query || query.length < 2) { resultsEl.innerHTML = ''; return; }
+  const all = Object.entries(ALL_COUNTRIES).flatMap(([cont, countries]) =>
+    countries.map(c => ({...c, continent: cont})));
+  const results = all.filter(c => c.name.toLowerCase().includes(query.toLowerCase()) || c.capital.toLowerCase().includes(query.toLowerCase()));
+  resultsEl.innerHTML = results.slice(0,8).map(c=>`
+  <div class="search-result-item" onclick="showCountry('${c.code}')">
+    <span style="font-size:32px">${c.flag}</span>
+    <div><div style="font-weight:800">${c.name}</div><div style="font-size:12px;color:var(--text-light)">📍 ${c.capital} · ${c.continent}</div></div>
+  </div>`).join('') || '<div style="padding:12px;color:var(--text-light);font-size:14px;">No results found</div>';
+}
+
+function showCountry(code) {
+  const all = Object.values(ALL_COUNTRIES).flat();
+  const c = all.find(x=>x.code===code);
+  if(!c) return;
+  state.studiedFlags[code] = true;
+  const overlay = document.getElementById('country-overlay');
+  overlay.style.display = 'flex';
+  document.getElementById('country-overlay-content').innerHTML = `
+  <div style="text-align:center;margin-bottom:16px;">
+    <div style="font-size:80px;margin-bottom:8px;">${c.flag}</div>
+    <div style="font-family:var(--font-title);font-size:28px;">${c.name}</div>
+  </div>
+  <div class="cdc-info">
+    <div class="cdc-info-item"><div class="ci-label">Capital City</div><div class="ci-value">📍 ${c.capital}</div></div>
+    <div class="cdc-info-item"><div class="ci-label">Country Code</div><div class="ci-value">${c.code}</div></div>
+  </div>
+  <div class="cdc-btns">
+    <button class="cdc-speak" onclick="speak('${c.name}',event)">🔊 Pronounce</button>
+    <button class="cdc-quiz" onclick="closeCountryOverlay();startFlagQuiz('mcq',null)">🎮 Quiz!</button>
+  </div>`;
+}
+
+function closeCountryOverlay() {
+  document.getElementById('country-overlay').style.display = 'none';
+}
+
+/* ============================================================
+   WORLD TOUR
+============================================================ */
+function showWorldTour() {
+  const continentMeta = [
+    {key:'Asia',name:'Asia',icon:'🏯',bg:'cc-asia',count:ALL_COUNTRIES.Asia.length},
+    {key:'Europe',name:'Europe',icon:'🏰',bg:'cc-europe',count:ALL_COUNTRIES.Europe.length},
+    {key:'Americas',name:'Americas',icon:'🗽',bg:'cc-americas',count:ALL_COUNTRIES.Americas.length},
+    {key:'Africa',name:'Africa',icon:'🦁',bg:'cc-africa',count:ALL_COUNTRIES.Africa.length},
+    {key:'Oceania',name:'Oceania',icon:'🦘',bg:'cc-oceania',count:ALL_COUNTRIES.Oceania.length},
+  ];
+  document.getElementById('app-content').innerHTML = `
+  <button style="background:none;border:none;font-size:24px;cursor:pointer;margin-bottom:12px;" onclick="showTab('home')">‹ Back</button>
+  <div class="world-tour-hero">
+    <span class="wt-plane">✈️</span>
+    <span class="wt-globe">🌍</span>
+    <div class="wt-title">World Tour!</div>
+    <div class="wt-sub">Explore all continents with ${state.user.name}!</div>
+  </div>
+  <div class="continent-cards">
+    ${continentMeta.map(c=>{
+      const studied = Object.keys(state.studiedFlags).filter(code => ALL_COUNTRIES[c.key]?.find(x=>x.code===code)).length;
+      const pct = Math.round(studied/c.count*100);
+      return `
+      <div class="continent-card ${c.bg}" onclick="tourContinent('${c.key}')">
+        <span class="cc-icon">${c.icon}</span>
+        <div class="cc-name">${c.name}</div>
+        <div class="cc-count">${c.count} countries · ${pct}%</div>
+        <div class="cc-progress"><div class="cc-progress-fill" style="width:${pct}%"></div></div>
+      </div>`;
+    }).join('')}
+  </div>`;
+}
+
+function tourContinent(cont) {
+  state.flags.continent = cont;
+  showTab('flags');
+  setTimeout(()=>{
+    document.getElementById('app-content').scrollTo(0,0);
+  },100);
+}
+
+/* ============================================================
+   PET / CHARACTER TAB
+============================================================ */
+function renderPet() {
+  const pet = PETS.find(p=>p.id===state.pet.type);
+  const { hat, glasses, clothes } = state.pet;
+  const hatAcc = ACCESSORIES.hats.find(a=>a.id===hat);
+  const glassesAcc = ACCESSORIES.glasses.find(a=>a.id===glasses);
+  const clothesAcc = ACCESSORIES.clothes.find(a=>a.id===clothes);
+  return `
+  <div class="pet-stage">
+    <div class="pet-display">
+      ${hatAcc?.emoji?`<div class="pet-accessory-hat">${hatAcc.emoji}</div>`:''}
+      <span class="pet-body">${pet?.emoji||'🐱'}</span>
+      ${glassesAcc?.emoji?`<div class="pet-accessory-glasses">${glassesAcc.emoji}</div>`:''}
+      ${clothesAcc?.emoji?`<div class="pet-accessory-clothes">${clothesAcc.emoji}</div>`:''}
+    </div>
+    <div class="pet-name">${pet?.name||'Pet'} ✨</div>
+  </div>
+  <div style="font-family:var(--font-title);font-size:18px;margin-bottom:10px;">Choose Pet 🐾</div>
+  <div class="pet-selector">
+    ${PETS.map(p=>`
+    <div class="pet-option ${state.pet.type===p.id?'selected':''}" onclick="changePet('${p.id}')">
+      <span class="po-emoji">${p.emoji}</span>
+      <span class="po-name">${p.name}</span>
+    </div>`).join('')}
+  </div>
+  <div class="customize-section">
+    <h3>🎩 Hats (🪙 ${state.coins} coins)</h3>
+    <div class="acc-grid">
+      ${ACCESSORIES.hats.map(a=>`
+      <div class="acc-item ${state.pet.hat===a.id?'selected':''} ${a.price>state.coins&&a.id!=='none'&&state.pet.hat!==a.id?'locked':''}"
+        onclick="wearAcc('hat','${a.id}',${a.price})">
+        <div class="acc-icon">${a.emoji||'🚫'}</div>
+        <div class="acc-price">${a.id==='none'?'Free':a.price<=state.coins||state.pet.hat===a.id?'🪙'+a.price:'🔒'+a.price}</div>
+      </div>`).join('')}
+    </div>
+  </div>
+  <div class="customize-section">
+    <h3>😎 Glasses</h3>
+    <div class="acc-grid">
+      ${ACCESSORIES.glasses.map(a=>`
+      <div class="acc-item ${state.pet.glasses===a.id?'selected':''} ${a.price>state.coins&&a.id!=='none'&&state.pet.glasses!==a.id?'locked':''}"
+        onclick="wearAcc('glasses','${a.id}',${a.price})">
+        <div class="acc-icon">${a.emoji||'🚫'}</div>
+        <div class="acc-price">${a.id==='none'?'Free':a.price<=state.coins||state.pet.glasses===a.id?'🪙'+a.price:'🔒'+a.price}</div>
+      </div>`).join('')}
+    </div>
+  </div>
+  <div class="customize-section">
+    <h3>👕 Clothes</h3>
+    <div class="acc-grid">
+      ${ACCESSORIES.clothes.map(a=>`
+      <div class="acc-item ${state.pet.clothes===a.id?'selected':''} ${a.price>state.coins&&a.id!=='none'&&state.pet.clothes!==a.id?'locked':''}"
+        onclick="wearAcc('clothes','${a.id}',${a.price})">
+        <div class="acc-icon">${a.emoji||'🚫'}</div>
+        <div class="acc-price">${a.id==='none'?'Free':a.price<=state.coins||state.pet.clothes===a.id?'🪙'+a.price:'🔒'+a.price}</div>
+      </div>`).join('')}
+    </div>
+  </div>`;
+}
+
+function changePet(id) {
+  state.pet.type = id;
+  showTab('pet');
+  updateHeader();
+}
+
+function wearAcc(type, id, price) {
+  if(state.pet[type] === id) { state.pet[type] = 'none'; showTab('pet'); return; }
+  if(price > 0 && state.coins < price) { alert(`You need ${price} coins! Earn more by taking quizzes! 🪙`); return; }
+  if(price > 0 && state.pet[type] !== id) state.coins -= price;
+  state.pet[type] = id;
+  updateHeader();
+  showTab('pet');
+}
+
+/* ============================================================
+   PROFILE TAB
+============================================================ */
+function renderProfile() {
+  const pet = PETS.find(p=>p.id===state.pet.type);
+  const lvl = Math.floor(state.xp / 100) + 1;
+  const totalWords = Object.values(state.studiedWords).reduce((a,b)=>a+b,0);
+  const totalFlags = Object.keys(state.studiedFlags).length;
+  const goldMedals = state.medals.filter(m=>m.medal==='gold').length;
+  const achievements = [
+    {name:'First Word',icon:'🔤',unlocked:totalWords>=1},
+    {name:'Wordsmith',icon:'📚',unlocked:totalWords>=50},
+    {name:'Flag Fan',icon:'🌍',unlocked:totalFlags>=10},
+    {name:'Explorer',icon:'✈️',unlocked:totalFlags>=30},
+    {name:'Gold Star',icon:'⭐',unlocked:goldMedals>=1},
+    {name:'Champion',icon:'🏆',unlocked:goldMedals>=5},
+    {name:'Rich',icon:'💰',unlocked:state.coins>=500},
+    {name:'Millionaire',icon:'🤑',unlocked:state.coins>=1000},
+    {name:'Streak!',icon:'🔥',unlocked:state.streak>=3},
+  ];
+  return `
+  <div class="profile-hero">
+    <div class="profile-pet">${pet?.emoji||'🐱'}</div>
+    <div class="profile-name">${state.user.name}</div>
+    <div class="profile-level">Level ${lvl} Explorer · ${state.user.age||'8-9'} years old</div>
+  </div>
+  <div class="stats-grid">
+    <div class="stat-card"><div class="sc-icon">📚</div><div class="sc-value">${totalWords}</div><div class="sc-label">Words Learned</div></div>
+    <div class="stat-card"><div class="sc-icon">🌍</div><div class="sc-value">${totalFlags}</div><div class="sc-label">Flags Learned</div></div>
+    <div class="stat-card"><div class="sc-icon">⭐</div><div class="sc-value">${state.xp}</div><div class="sc-label">Total XP</div></div>
+    <div class="stat-card"><div class="sc-icon">🪙</div><div class="sc-value">${state.coins}</div><div class="sc-label">Coins</div></div>
+    <div class="stat-card"><div class="sc-icon">🏆</div><div class="sc-value">${goldMedals}</div><div class="sc-label">Gold Medals</div></div>
+    <div class="stat-card"><div class="sc-icon">🔥</div><div class="sc-value">${state.streak}</div><div class="sc-label">Day Streak</div></div>
+  </div>
+  <div class="section-title">🏅 Achievements</div>
+  <div class="achievements-grid">
+    ${achievements.map(a=>`
+    <div class="achievement ${a.unlocked?'':'locked'}">
+      <div class="ach-icon">${a.icon}</div>
+      <div class="ach-name">${a.name}</div>
+    </div>`).join('')}
+  </div>
+  <div class="section-title">📊 Progress by Category</div>
+  ${Object.entries(VOCAB_CATEGORIES).map(([key,cat])=>{
+    const words = cat[state.quiz.level]||[];
+    const done = state.studiedWords[key+state.quiz.level]||0;
+    const pct = words.length?Math.round(done/words.length*100):0;
+    const medal = state.medals.find(m=>m.category===key);
+    return `<div class="progress-ring">
+      <span style="font-size:22px">${cat.icon}</span>
+      <span style="font-weight:700;font-size:13px;flex:0 0 80px">${cat.name}</span>
+      <div class="pr-bar"><div class="pr-bar-fill" style="width:${pct}%;background:${pct===100?'var(--green)':'var(--primary)'}"></div></div>
+      <div style="font-size:16px">${medal?medal.medal==='gold'?'🥇':medal.medal==='silver'?'🥈':'🥉':'🔒'}</div>
+    </div>`;
+  }).join('')}
+  <button style="width:100%;margin-top:16px;padding:14px;background:#FF4757;color:white;border-radius:var(--radius-sm);font-size:15px;font-weight:700;" onclick="logout()">🚪 Log Out</button>`;
+}
+
+function logout() {
+  if(confirm('Are you sure you want to log out?')) {
+    state.user = {name:'',age:'',gender:'',email:''};
+    showScreen('screen-login');
+  }
+}
+
+/* ============================================================
+   UTILS
+============================================================ */
+function shuffle(arr) {
+  const a = [...arr];
+  for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
+  return a;
+}
+
+function speak(text, event) {
+  if(event) event.stopPropagation();
+  if('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = 'en-US'; u.rate = 0.9; u.pitch = 1.1;
+    window.speechSynthesis.speak(u);
+  }
+}
+
+function launchConfetti() {
+  const colors = ['#FF6B6B','#4ECDC4','#FFE66D','#A855F7','#10B981','#3B82F6','#F97316'];
+  for(let i=0;i<60;i++){
+    const c = document.createElement('div');
+    c.className = 'confetti-piece';
+    c.style.cssText = `left:${Math.random()*100}%;background:${colors[i%colors.length]};animation-duration:${2+Math.random()*2}s;animation-delay:${Math.random()*0.5}s;transform:rotate(${Math.random()*360}deg);`;
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(), 4000);
+  }
+}
+
+function launchMiniConfetti() {
+  const colors = ['#FFE66D','#4ECDC4','#A855F7'];
+  for(let i=0;i<12;i++){
+    const c = document.createElement('div');
+    c.className = 'confetti-piece';
+    c.style.cssText = `left:${20+Math.random()*60}%;width:8px;height:8px;background:${colors[i%colors.length]};animation-duration:1.5s;animation-delay:${Math.random()*0.2}s;`;
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(), 2000);
+  }
+}
+
+// Close country overlay on outside click
+document.getElementById('country-overlay')?.addEventListener('click', function(e) {
+  if(e.target === this) closeCountryOverlay();
+});
+
+// Init streak
+state.streak = Math.floor(Math.random()*7)+1;
+
+/* ============================================================
+   🧮 MATH ENGINE — 수학왕
+   Python app.py 와 동일한 로직 (오프라인 완전 지원)
+============================================================ */
+
+// ── 학년/난이도 설정 ──────────────────────────────────────────
+const MATH_GRADE_CONFIG = {
+  '1-1':{ name:'1학년 · 쉬움',   desc:'10 이하 덧/뺄',     goal:5,  types:['add_small','sub_small'] },
+  '1-2':{ name:'1학년 · 보통',   desc:'20 이하 덧/뺄',     goal:6,  types:['add_teen','sub_teen'] },
+  '1-3':{ name:'1학년 · 어려움', desc:'받아올림/내림',       goal:7,  types:['add_carry','sub_borrow'] },
+  '2-1':{ name:'2학년 · 쉬움',   desc:'2~5단 곱셈',        goal:6,  types:['mul_easy'] },
+  '2-2':{ name:'2학년 · 보통',   desc:'100 이하 혼합+곱셈', goal:7,  types:['add_100','sub_100','mul_easy'] },
+  '2-3':{ name:'2학년 · 어려움', desc:'세 자리 연산',       goal:8,  types:['add_3digit','sub_3digit'] },
+  '3-1':{ name:'3학년 · 쉬움',   desc:'구구단+나눗셈',      goal:7,  types:['mul_full','div_easy'] },
+  '3-2':{ name:'3학년 · 보통',   desc:'두자리×한자리',      goal:8,  types:['mul_2x1','div_full'] },
+  '3-3':{ name:'3학년 · 어려움', desc:'두자리×두자리',      goal:10, types:['mul_2x2','div_full','add_3digit'] },
+};
+
+const MATH_OP_INFO = {
+  '+':{label:'➕ 덧셈',cls:'math-op-add'},
+  '-':{label:'➖ 뺄셈',cls:'math-op-sub'},
+  '*':{label:'✖ 곱셈',cls:'math-op-mul'},
+  '/':{label:'➗ 나눗셈',cls:'math-op-div'},
+};
+
+// state
+let mathState = {
+  grade:1, diff:1, lives:3, mathScore:0, xp:0,
+  current:null, hintUsed:false, loading:false,
+  online:true,
+};
+
+const mri = (lo,hi)=>lo+Math.floor(Math.random()*(hi-lo+1));
+
+function mathMakeProb(op,a,b){
+  if(op==='+'){
+    if(a===null)a=mri(1,50);if(b===null)b=mri(1,50);
+    return{display:`${a} + ${b} = ?`,answer:a+b,op:'+',a,b,hint:`${a}에서 ${b}을(를) 더해요!`};
+  }
+  if(op==='-'){
+    if(b===null)b=mri(1,Math.max(1,a-1));
+    return{display:`${a} - ${b} = ?`,answer:a-b,op:'-',a,b,hint:`${a}에서 ${b}을(를) 빼요!`};
+  }
+  if(op==='*'){
+    if(a===null)a=mri(2,9);if(b===null)b=mri(2,9);
+    const parts=[...Array(Math.min(b,4))].map(()=>a).join('+')+(b>4?'...':'');
+    return{display:`${a} × ${b} = ?`,answer:a*b,op:'*',a,b,hint:`${a}를 ${b}번 더해요! (${parts})`};
+  }
+  if(op==='/'){
+    if(b===null)b=mri(2,9);const ans=mri(1,9);a=b*ans;
+    return{display:`${a} ÷ ${b} = ?`,answer:ans,op:'/',a,b,hint:`${b}를 몇 번 더하면 ${a}가 될까요?`};
+  }
+}
+
+const MATH_GEN={
+  add_small: ()=>mathMakeProb('+',mri(1,9),   mri(1,9)),
+  sub_small: ()=>mathMakeProb('-',mri(2,10),  null),
+  add_teen:  ()=>mathMakeProb('+',mri(1,19),  mri(1,19)),
+  sub_teen:  ()=>mathMakeProb('-',mri(5,20),  null),
+  add_carry: ()=>mathMakeProb('+',mri(6,19),  mri(6,19)),
+  sub_borrow:()=>mathMakeProb('-',mri(11,30), null),
+  add_100:   ()=>mathMakeProb('+',mri(10,90), mri(10,90)),
+  sub_100:   ()=>mathMakeProb('-',mri(20,99), null),
+  mul_easy:  ()=>mathMakeProb('*',mri(2,5),   mri(2,9)),
+  add_3digit:()=>mathMakeProb('+',mri(100,899),mri(10,99)),
+  sub_3digit:()=>mathMakeProb('-',mri(200,999),null),
+  mul_full:  ()=>mathMakeProb('*',mri(2,9),   mri(2,9)),
+  div_easy:  ()=>mathMakeProb('/',null,       mri(2,5)),
+  mul_2x1:   ()=>mathMakeProb('*',mri(10,99), mri(2,9)),
+  div_full:  ()=>mathMakeProb('/',null,       mri(2,9)),
+  mul_2x2:   ()=>mathMakeProb('*',mri(10,30), mri(10,20)),
+};
+
+function mathLocalGen(grade,diff){
+  const key=`${grade}-${diff}`;
+  const cfg=MATH_GRADE_CONFIG[key]||MATH_GRADE_CONFIG['1-1'];
+  const types=cfg.types;
+  const t=types[Math.floor(Math.random()*types.length)];
+  const prob=MATH_GEN[t]();
+  prob.grade_name=cfg.name; prob.grade_goal=cfg.goal;
+  return prob;
+}
+
+// ── API with fallback ─────────────────────────────────────────
+const MATH_API = window.location.origin;
+let mathNetCheckTimer = null;
+
+async function mathPingServer(){
+  try{
+    const r=await fetch(`${MATH_API}/api/grades`,{signal:AbortSignal.timeout(2500)});
+    mathState.online=r.ok;
+  }catch{mathState.online=false;}
+  const dot=document.getElementById('math-net-dot');
+  if(dot){dot.className='math-net-dot '+(mathState.online?'online':'offline');dot.title=mathState.online?'서버 연결됨':'오프라인 모드';}
+}
+
+async function mathFetchOrLocal(grade,diff){
+  if(mathState.online){
+    try{
+      const r=await fetch(`${MATH_API}/api/problem?grade=${grade}&diff=${diff}`,{signal:AbortSignal.timeout(3500)});
+      if(r.ok)return{prob:await r.json(),online:true};
+    }catch{}
+    mathState.online=false;
+  }
+  return{prob:mathLocalGen(grade,diff),online:false};
+}
+
+async function mathCheckOrLocal(userAns,correct,hintUsed){
+  if(mathState.online){
+    try{
+      const r=await fetch(`${MATH_API}/api/check`,{
+        method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({answer:userAns,correct,hint_used:hintUsed}),
+        signal:AbortSignal.timeout(3500),
+      });
+      if(r.ok)return r.json();
+    }catch{}
+    mathState.online=false;
+  }
+  const ok=userAns===correct;
+  return{correct:ok,points:ok?(hintUsed?5:10):0,
+    direction:userAns>correct?'down':'up',
+    message:ok?'정답이에요! 🎉':`틀렸어요 😢 정답은 ${correct}이에요!`};
+}
+
+// ── Render ─────────────────────────────────────────────────────
+function renderMath(){
+  const key=`${mathState.grade}-${mathState.diff}`;
+  const cfg=MATH_GRADE_CONFIG[key]||{name:'',goal:5};
+  const xpPct=Math.round((mathState.xp/cfg.goal)*100);
+
+  const gradeRows = [
+    {g:1,label:'🌱 초등 1학년',btns:[
+      {d:1,cls:'g1',txt:'쉬움',sub:'10 이하'},
+      {d:2,cls:'g1',txt:'보통',sub:'20 이하'},
+      {d:3,cls:'g1',txt:'어려움',sub:'받아올림'},
+    ]},
+    {g:2,label:'🌊 초등 2학년',btns:[
+      {d:1,cls:'g2',txt:'쉬움',sub:'2~5단'},
+      {d:2,cls:'g2',txt:'보통',sub:'100 이하'},
+      {d:3,cls:'g2',txt:'어려움',sub:'세 자리'},
+    ]},
+    {g:3,label:'🔥 초등 3학년',btns:[
+      {d:1,cls:'g3',txt:'쉬움',sub:'구구단'},
+      {d:2,cls:'g3',txt:'보통',sub:'두자리×'},
+      {d:3,cls:'g3',txt:'어려움',sub:'두자리×두자리'},
+    ]},
+  ];
+
+  return `
+  <div class="math-hero">
+    <h2>수학왕 🧮</h2>
+    <p>${cfg.name} &nbsp;|&nbsp; ❤️ ${mathState.lives} &nbsp;⭐ ${mathState.mathScore}점
+      <span class="math-net-dot" id="math-net-dot"></span>
+    </p>
+    <div class="math-xp-wrap"><div class="math-xp-bar" id="math-xp-bar" style="width:${xpPct}%"></div></div>
+    <div class="math-xp-label">${mathState.xp} / ${cfg.goal} 문제 완료</div>
+  </div>
+
+  <!-- Grade selector -->
+  <div class="grade-toggle-bar" id="grade-toggle-bar" onclick="mathToggleGradePanel()">
+    <span class="grade-toggle-label">학년/난이도</span>
+    <span class="grade-toggle-val" id="grade-toggle-val">${cfg.name}</span>
+    <span class="grade-toggle-arrow">▼</span>
+  </div>
+  <div class="grade-panel" id="math-grade-panel">
+    ${gradeRows.map(row=>`
+    <div>
+      <div class="grade-section-hd">${row.label}</div>
+      <div class="grade-grid">
+        ${row.btns.map(b=>`
+        <button class="grade-opt-btn ${b.cls} ${mathState.grade===row.g&&mathState.diff===b.d?'active':''}"
+          onclick="mathSelectGrade(${row.g},${b.d})">
+          ${b.txt}<small>${b.sub}</small>
+        </button>`).join('')}
+      </div>
+    </div>`).join('')}
+  </div>
+
+  <!-- Problem -->
+  <div class="math-problem-card">
+    <div class="math-op-badge math-op-add" id="math-op-badge">➕ 덧셈</div>
+    <div class="math-problem-text" id="math-problem-display">불러오는 중...</div>
+    <div class="math-hint-text" id="math-hint-text">잠시만 기다려 주세요!</div>
+  </div>
+
+  <!-- Answer -->
+  <div class="math-answer-row">
+    <input class="math-answer-input" type="number" id="math-answer-input"
+           placeholder="?" inputmode="numeric" autocomplete="off"
+           onkeydown="if(event.key==='Enter')mathCheckAnswer()"/>
+    <button class="math-btn hint" id="math-hint-btn" onclick="mathShowHint()">💡</button>
+    <button class="math-btn check" id="math-check-btn" onclick="mathCheckAnswer()">확인 ✓</button>
+  </div>
+
+  <!-- Numpad -->
+  <div class="math-numpad">
+    <button class="math-pad-btn num" onclick="mathPad('7')">7</button>
+    <button class="math-pad-btn num" onclick="mathPad('8')">8</button>
+    <button class="math-pad-btn num" onclick="mathPad('9')">9</button>
+    <button class="math-pad-btn del" onclick="mathPadDel()">⌫</button>
+    <button class="math-pad-btn num" onclick="mathPad('4')">4</button>
+    <button class="math-pad-btn num" onclick="mathPad('5')">5</button>
+    <button class="math-pad-btn num" onclick="mathPad('6')">6</button>
+    <button class="math-pad-btn neg" onclick="mathPadNeg()">±</button>
+    <button class="math-pad-btn num" onclick="mathPad('1')">1</button>
+    <button class="math-pad-btn num" onclick="mathPad('2')">2</button>
+    <button class="math-pad-btn num" onclick="mathPad('3')">3</button>
+    <button class="math-pad-btn num" onclick="mathPad('0')">0</button>
+    <button class="math-pad-btn ok"  onclick="mathCheckAnswer()">정답 입력 ✓</button>
+  </div>
+
+  <div class="math-feedback idle" id="math-feedback">문제를 풀어보세요! 💪</div>
+  <button class="math-next-btn" onclick="mathNextProblem()">다음 문제 ➡</button>
+  `;
+}
+
+// ── Init after render ─────────────────────────────────────────
+async function initMathTab(){
+  await mathPingServer();
+  await mathNextProblem();
+  if(mathNetCheckTimer) clearInterval(mathNetCheckTimer);
+  mathNetCheckTimer = setInterval(mathPingServer, 30000);
+}
+
+// ── Game logic ────────────────────────────────────────────────
+async function mathNextProblem(){
+  if(mathState.loading) return;
+  mathState.loading=true; mathState.hintUsed=false;
+
+  mathSetFeedback('loading','<span class="math-spinner"></span>문제 생성 중...');
+  const inp=document.getElementById('math-answer-input');
+  if(inp){inp.value='';inp.className='math-answer-input';}
+  const hb=document.getElementById('math-hint-btn');if(hb)hb.style.opacity='1';
+  const cb=document.getElementById('math-check-btn');if(cb)cb.disabled=true;
+
+  const{prob}=await mathFetchOrLocal(mathState.grade,mathState.diff);
+  mathState.current=prob;
+
+  const pd=document.getElementById('math-problem-display');
+  if(pd)pd.textContent=prob.display;
+  const ht=document.getElementById('math-hint-text');
+  if(ht)ht.textContent='💬 숫자를 입력하거나 키패드를 눌러요!';
+
+  const opInfo=MATH_OP_INFO[prob.op]||MATH_OP_INFO['+'];
+  const badge=document.getElementById('math-op-badge');
+  if(badge){badge.textContent=opInfo.label;badge.className='math-op-badge '+opInfo.cls;}
+
+  mathSetFeedback('idle','문제를 풀어보세요! 💪');
+  mathState.loading=false;
+  if(cb)cb.disabled=false;
+  mathUpdateUI();
+}
+
+async function mathCheckAnswer(){
+  if(!mathState.current||mathState.loading)return;
+  const inp=document.getElementById('math-answer-input');
+  const val=parseInt(inp.value);
+  if(isNaN(val)){mathSetFeedback('wrong','숫자를 입력해 주세요! 🔢');return;}
+
+  mathState.loading=true;
+  const cb=document.getElementById('math-check-btn');if(cb)cb.disabled=true;
+
+  const result=await mathCheckOrLocal(val,mathState.current.answer,mathState.hintUsed);
+
+  if(result.correct){
+    mathState.mathScore+=result.points; mathState.xp+=1;
+    if(inp)inp.className='math-answer-input correct';
+    mathSetFeedback('correct',`🎉 ${result.message} +${result.points}점`);
+    launchMiniConfetti();
+    state.xp+=result.points; state.coins+=Math.floor(result.points/2);
+    updateHeader();
+
+    const goal=(MATH_GRADE_CONFIG[`${mathState.grade}-${mathState.diff}`]||{}).goal||5;
+    if(mathState.xp>=goal){
+      setTimeout(()=>{
+        if(mathState.diff<3){mathState.diff++;}
+        else if(mathState.grade<3){mathState.grade++;mathState.diff=1;}
+        mathState.xp=0;
+        launchConfetti();
+        mathUpdateGradeButtons();
+        mathSetFeedback('correct',`🚀 레벨 업! ${(MATH_GRADE_CONFIG[`${mathState.grade}-${mathState.diff}`]||{}).name||''}`);
+        mathUpdateUI();
+      },1400);
+    }
+  }else{
+    mathState.lives=Math.max(0,mathState.lives-1);
+    if(inp)inp.className='math-answer-input wrong';
+    const tip=result.direction==='down'?'더 작은 수예요 👇':'더 큰 수예요 👆';
+    mathSetFeedback('wrong',`${result.message} (${tip})`);
+    if(mathState.lives===0){
+      setTimeout(()=>{
+        mathState.lives=3;mathState.mathScore=0;mathState.xp=0;mathState.grade=1;mathState.diff=1;
+        mathUpdateGradeButtons();
+        mathSetFeedback('idle','다시 시작해요! 화이팅 💪');
+        mathUpdateUI();mathNextProblem();
+      },2000);
+    }
+  }
+  mathUpdateUI();
+  mathState.loading=false;
+  if(cb)cb.disabled=false;
+}
+
+function mathShowHint(){
+  if(!mathState.current)return;
+  mathState.hintUsed=true;
+  const hb=document.getElementById('math-hint-btn');if(hb)hb.style.opacity='.3';
+  const ht=document.getElementById('math-hint-text');
+  if(ht)ht.textContent='💡 '+(mathState.current.hint||'잘 생각해봐요!');
+}
+
+// ── UI helpers ────────────────────────────────────────────────
+function mathUpdateUI(){
+  const key=`${mathState.grade}-${mathState.diff}`;
+  const cfg=MATH_GRADE_CONFIG[key]||{name:'',goal:5};
+  const heroP=document.querySelector('.math-hero p');
+  if(heroP)heroP.innerHTML=`${cfg.name} &nbsp;|&nbsp; ❤️ ${'❤️'.repeat(mathState.lives)} &nbsp;⭐ ${mathState.mathScore}점
+    <span class="math-net-dot ${mathState.online?'online':'offline'}" id="math-net-dot"></span>`;
+  const xpBar=document.getElementById('math-xp-bar');
+  if(xpBar)xpBar.style.width=`${Math.round((mathState.xp/cfg.goal)*100)}%`;
+  const xpLbl=document.querySelector('.math-xp-label');
+  if(xpLbl)xpLbl.textContent=`${mathState.xp} / ${cfg.goal} 문제 완료`;
+  const tv=document.getElementById('grade-toggle-val');
+  if(tv)tv.textContent=cfg.name;
+}
+
+function mathSetFeedback(type,html){
+  const el=document.getElementById('math-feedback');
+  if(el){el.className='math-feedback '+type;el.innerHTML=html;}
+}
+
+function mathToggleGradePanel(){
+  const panel=document.getElementById('math-grade-panel');
+  const bar=document.getElementById('grade-toggle-bar');
+  if(!panel)return;
+  const open=panel.classList.toggle('open');
+  bar.classList.toggle('open',open);
+}
+
+function mathSelectGrade(g,d){
+  mathState.grade=g;mathState.diff=d;mathState.xp=0;
+  mathUpdateGradeButtons();
+  const panel=document.getElementById('math-grade-panel');
+  const bar=document.getElementById('grade-toggle-bar');
+  if(panel)panel.classList.remove('open');
+  if(bar)bar.classList.remove('open');
+  mathUpdateUI();mathNextProblem();
+}
+
+function mathUpdateGradeButtons(){
+  document.querySelectorAll('.grade-opt-btn').forEach(el=>{
+    const g=parseInt(el.getAttribute('onclick').match(/\d+/)[0]);
+    const d=parseInt(el.getAttribute('onclick').match(/\d+/g)[1]);
+    el.classList.toggle('active',g===mathState.grade&&d===mathState.diff);
+  });
+}
+
+function mathPad(n){
+  const inp=document.getElementById('math-answer-input');
+  if(!inp||inp.value.replace('-','').length>=6)return;
+  inp.value+=n;inp.className='math-answer-input';
+}
+function mathPadDel(){const inp=document.getElementById('math-answer-input');if(inp)inp.value=inp.value.slice(0,-1);}
+function mathPadNeg(){const inp=document.getElementById('math-answer-input');if(inp)inp.value=inp.value.startsWith('-')?inp.value.slice(1):'-'+inp.value;}
+
+/* ============================================================
+   🤖 AI AGENT TAB  — WolframAlpha powered
+   App ID: LJYQJ5XPV7
+   Proxy route: /api/wolfram?q=... (Flask handles CORS + key)
+   Modes: chat | math | english
+============================================================ */
+
+const WOLFRAM_APPID = 'LJYQJ5XPV7';
+
+// All Wolfram queries go through Flask /api/wolfram to avoid CORS
+// Falls back to a simple local parser if server is offline
+async function wolframQuery(q, full=false) {
+  const endpoint = full
+    ? `/api/wolfram/full?q=${encodeURIComponent(q)}`
+    : `/api/wolfram?q=${encodeURIComponent(q)}`;
+  try {
+    const r = await fetch(endpoint, {signal: AbortSignal.timeout(8000)});
+    if(r.ok) {
+      const data = await r.json();
+      return data;
+    }
+  } catch(e) {}
+  return null;
+}
+
+// ── Agent state ───────────────────────────────────────────────
+let agentState = {
+  mode: 'chat',           // 'chat' | 'math' | 'english'
+  chatHistory: [],        // [{role:'bot'|'user', text}]
+  mathTopic: 'addition',
+  mathGrade: 'grade1',
+  genProblem: null,
+};
+
+// ── Render ────────────────────────────────────────────────────
+function renderAgent() {
+  return `
+  <div class="agent-hero" style="background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460);border-radius:var(--radius-lg);padding:24px;color:white;margin-bottom:16px;position:relative;overflow:hidden;">
+    <div style="position:absolute;top:-20px;right:-20px;font-size:100px;opacity:.08;pointer-events:none;">🤖</div>
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
+      <span style="font-size:36px;animation:bounce 2s infinite;">🤖</span>
+      <div>
+        <h2 style="font-family:var(--font-title);font-size:22px;margin:0;">${t('aiTutorTitle')}</h2>
+        <p style="font-size:12px;opacity:.8;margin:2px 0 0;">${t('aiTutorSub')}</p>
+      </div>
+    </div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;">
+      <span style="background:rgba(255,255,255,.15);border-radius:50px;padding:3px 10px;font-size:11px;font-weight:700;">✨ Claude Sonnet</span>
+      <span style="background:rgba(255,255,255,.15);border-radius:50px;padding:3px 10px;font-size:11px;font-weight:700;">🧮 Wolfram|Alpha</span>
+      <span style="background:rgba(255,255,255,.15);border-radius:50px;padding:3px 10px;font-size:11px;font-weight:700;">🌐 한국어/English</span>
+    </div>
+  </div>
+
+  <div class="agent-mode-tabs">
+    <button class="agent-mode-btn mode-chat ${agentState.mode==='chat'?'active':''}" onclick="agentSetMode('chat')">${t('modeChat')}</button>
+    <button class="agent-mode-btn mode-math ${agentState.mode==='math'?'active':''}" onclick="agentSetMode('math')">${t('modeMath')}</button>
+    <button class="agent-mode-btn mode-english ${agentState.mode==='english'?'active':''}" onclick="agentSetMode('english')">${t('modeEnglish')}</button>
+  </div>
+
+  <div id="agent-body"><!-- filled by initAgent() --></div>
+  `;
+}
+
+function initAgent() {
+  agentRenderBody();
+}
+
+function agentSetMode(mode) {
+  agentState.mode = mode;
+  // re-render just the mode tabs & body
+  document.querySelectorAll('.agent-mode-btn').forEach((b,i)=>{
+    b.classList.toggle('active', ['chat','math','english'][i]===mode);
+    const cls=['mode-chat','mode-math','mode-english'][i];
+    b.className = `agent-mode-btn ${cls} ${['chat','math','english'][i]===mode?'active':''}`;
+  });
+  agentRenderBody();
+}
+
+function agentRenderBody() {
+  const el = document.getElementById('agent-body');
+  if(!el) return;
+  if(agentState.mode==='chat')    el.innerHTML = agentRenderChat();
+  else if(agentState.mode==='math')    el.innerHTML = agentRenderMathGen();
+  else if(agentState.mode==='english') el.innerHTML = agentRenderEnglish();
+  agentBindEvents();
+}
+
+// ── CHAT MODE ─────────────────────────────────────────────────
+function agentRenderChat() {
+  const chips = t('chips');
+  const greeting = agentState.chatHistory.length === 0 ? t('greetingMsg') : null;
+  const msgs = agentState.chatHistory.length
+    ? agentState.chatHistory.map(m => chatBubbleHTML(m.role, m.text)).join('')
+    : chatBubbleHTML('bot', greeting);
+
+  return `
+  <div class="agent-chat" id="agent-chat-box">${msgs}</div>
+  <div class="agent-chips" id="agent-chips">
+    ${chips.map(c=>`<button class="agent-chip" onclick="agentChipSend('${c.replace(/'/g,"\'")}')">${c}</button>`).join('')}
+  </div>
+  <div class="agent-input-row">
+    <input class="agent-input" id="agent-chat-input" placeholder="${t('inputPlaceholder')}" type="text"
+      onkeydown="if(event.key==='Enter')agentChatSend()"/>
+    <button class="agent-send-btn" id="agent-send-btn" onclick="agentChatSend()">➤</button>
+  </div>`;
+}
+
+function chatBubbleHTML(role, text) {
+  const avatar = role==='bot' ? '🤖' : (state.name?state.name[0].toUpperCase():'👤');
+  return `<div class="chat-msg ${role}">
+    <div class="chat-avatar ${role}">${avatar}</div>
+    <div class="chat-bubble ${role}">${text}</div>
+  </div>`;
+}
+
+function agentBindEvents() {
+  // nothing extra needed — onclick attrs handle it
+}
+
+function agentChipSend(text) {
+  const inp = document.getElementById('agent-chat-input');
+  if(inp) inp.value = text;
+  agentChatSend();
+}
+
+async function agentChatSend() {
+  const inp = document.getElementById('agent-chat-input');
+  if(!inp) return;
+  const q = inp.value.trim();
+  if(!q) return;
+  inp.value = '';
+
+  // Add user message
+  agentState.chatHistory.push({role:'user', text: escapeHTML(q)});
+  agentRefreshChat(true); // show typing
+
+  const btn = document.getElementById('agent-send-btn');
+  if(btn) btn.disabled = true;
+
+  // Build messages for Claude (keep last 10 turns for context)
+  const apiMessages = agentState.chatHistory.slice(-10).map(m => ({
+    role: m.role === 'bot' ? 'assistant' : 'user',
+    content: m.rawText || m.text.replace(/<[^>]+>/g, ''), // strip HTML for API
+  }));
+
+  let botReply = '';
+  let rawText = '';
+
+  // 1. Try Claude API first
+  const claudeResp = await callClaudeAPI(apiMessages);
+
+  if(claudeResp) {
+    rawText = claudeResp;
+    botReply = claudeTextToHTML(claudeResp);
+  } else {
+    // 2. Fall back to Wolfram
+    const result = await wolframQuery(q);
+    if(result && result.answer) {
+      botReply = formatWolframAnswer(q, result);
+      rawText = result.answer;
+    } else {
+      // 3. Local fallback
+      botReply = localSmartAnswer(q);
+      rawText = botReply.replace(/<[^>]+>/g,'');
+    }
+  }
+
+  agentState.chatHistory.push({role:'bot', text: botReply, rawText});
+  agentRefreshChat(false);
+  if(btn) btn.disabled = false;
+
+  // Award XP
+  state.xp += 3; updateHeader();
+}
+
+function agentRefreshChat(typing=false) {
+  const box = document.getElementById('agent-chat-box');
+  if(!box) return;
+  let html = agentState.chatHistory.map(m=>chatBubbleHTML(m.role, m.text)).join('');
+  if(typing) html += `<div class="chat-msg bot"><div class="chat-avatar bot">🤖</div><div class="chat-bubble bot"><div class="chat-typing"><span></span><span></span><span></span></div><span style="font-size:11px;opacity:.7;">${t('thinkingMsg')}</span></div></div>`;
+  box.innerHTML = html;
+  box.scrollTop = box.scrollHeight;
+}
+
+function formatWolframAnswer(q, data) {
+  let html = '';
+  if(data.answer) html += `<b>Answer:</b> <code>${escapeHTML(data.answer)}</code>`;
+  if(data.steps && data.steps.length) {
+    html += '<br><br><span style="font-size:12px;color:#718096;">Step-by-step:</span><br>';
+    html += data.steps.slice(0,3).map(s=>`<span style="font-size:12px;">• ${escapeHTML(s)}</span>`).join('<br>');
+  }
+  if(data.image) html += `<br><img src="${data.image}" alt="Wolfram result" onerror="this.style.display='none'"/>`;
+  return html || `<b>Result:</b> ${escapeHTML(data.raw||'No result found.')}`;
+}
+
+// Smart local fallback (runs without server)
+function localSmartAnswer(q) {
+  const ql = q.toLowerCase().trim();
+
+  // Simple arithmetic
+  const arithMatch = q.match(/^[\d\s\+\-\*\/\×\÷\^\.()]+$/);
+  if(arithMatch) {
+    try {
+      const clean = q.replace(/×/g,'*').replace(/÷/g,'/');
+      const val = Function('"use strict"; return ('+clean+')')();
+      if(!isNaN(val)) return `<b>${q.trim()} = <code>${val}</code></b> 🎉`;
+    } catch(e) {}
+  }
+
+  // Spell check trigger
+  if(ql.startsWith('spell')) {
+    const word = q.replace(/spell\s*/i,'').trim();
+    return `The spelling of <b>"${escapeHTML(word)}"</b> is: <code>${escapeHTML(word)}</code><br><small>Tip: Ask me to define it too!</small>`;
+  }
+
+  // Define
+  if(ql.startsWith('define') || ql.startsWith('what is a') || ql.startsWith('what is an')) {
+    const word = q.replace(/define\s*:?\s*|what is an?\s*/i,'').trim();
+    return `I searched for <b>"${escapeHTML(word)}"</b>. The server couldn't reach Wolfram|Alpha right now — try again in a moment! 🔄`;
+  }
+
+  // Pi
+  if(ql.includes('what is π') || ql.includes('what is pi')) {
+    return `π (Pi) ≈ <code>3.14159265...</code><br>It's the ratio of a circle's circumference to its diameter! 🔵`;
+  }
+
+  // Moon distance
+  if(ql.includes('moon') && ql.includes('far')) {
+    return `The Moon is about <code>384,400 km</code> (238,855 miles) away from Earth! 🌕`;
+  }
+
+  // Times tables
+  const timesMatch = q.match(/(\d+)\s*[×x\*]\s*(\d+)/);
+  if(timesMatch) {
+    const a=parseInt(timesMatch[1]), b=parseInt(timesMatch[2]);
+    return `<b>${a} × ${b} = <code>${a*b}</code></b> ✖️🎉`;
+  }
+
+  // Addition/subtraction
+  const addMatch = q.match(/(\d+)\s*\+\s*(\d+)/);
+  if(addMatch) return `<b>${addMatch[1]} + ${addMatch[2]} = <code>${parseInt(addMatch[1])+parseInt(addMatch[2])}</code></b> ➕🎉`;
+  const subMatch = q.match(/(\d+)\s*\-\s*(\d+)/);
+  if(subMatch) return `<b>${subMatch[1]} - ${subMatch[2]} = <code>${parseInt(subMatch[1])-parseInt(subMatch[2])}</code></b> ➖🎉`;
+  const divMatch = q.match(/(\d+)\s*[÷\/]\s*(\d+)/);
+  if(divMatch) {
+    const a=parseInt(divMatch[1]), b=parseInt(divMatch[2]);
+    if(b!==0) return `<b>${a} ÷ ${b} = <code>${(a/b).toFixed(a%b===0?0:2)}</code></b> ➗🎉`;
+  }
+
+  return `I couldn't reach Wolfram|Alpha right now 🔄<br>Try: <i>"What is 7 × 8?"</i> or <i>"Spell necessary"</i>`;
+}
+
+// ── MATH GEN MODE (Wolfram generates & validates) ─────────────
+function agentRenderMathGen() {
+  const prob = agentState.genProblem;
+  const isKo = currentLang === 'ko';
+  return `
+  <div class="wolfram-badge">✨ Claude AI + Wolfram|Alpha</div>
+  <div class="wolfram-gen-card">
+    <div class="wolfram-gen-title">${isKo?'🎲 수학 문제 생성':'🎲 Generate a Math Problem'}</div>
+    <div class="wolfram-gen-grid">
+      <select class="wolfram-select" id="wf-grade" onchange="agentState.mathGrade=this.value">
+        <option value="grade1" ${agentState.mathGrade==='grade1'?'selected':''}>${isKo?'1학년':'Grade 1'}</option>
+        <option value="grade2" ${agentState.mathGrade==='grade2'?'selected':''}>${isKo?'2학년':'Grade 2'}</option>
+        <option value="grade3" ${agentState.mathGrade==='grade3'?'selected':''}>${isKo?'3학년':'Grade 3'}</option>
+      </select>
+      <select class="wolfram-select" id="wf-topic" onchange="agentState.mathTopic=this.value">
+        <option value="addition"       ${agentState.mathTopic==='addition'?'selected':''}>${isKo?'덧셈':'Addition'}</option>
+        <option value="subtraction"    ${agentState.mathTopic==='subtraction'?'selected':''}>${isKo?'뺄셈':'Subtraction'}</option>
+        <option value="multiplication" ${agentState.mathTopic==='multiplication'?'selected':''}>${isKo?'곱셈':'Multiplication'}</option>
+        <option value="division"       ${agentState.mathTopic==='division'?'selected':''}>${isKo?'나눗셈':'Division'}</option>
+        <option value="mixed"          ${agentState.mathTopic==='mixed'?'selected':''}>${isKo?'혼합':'Mixed'}</option>
+        <option value="fractions"      ${agentState.mathTopic==='fractions'?'selected':''}>${isKo?'분수':'Fractions'}</option>
+        <option value="word_problem"   ${agentState.mathTopic==='word_problem'?'selected':''}>${isKo?'문장제':'Word Problem'}</option>
+      </select>
+    </div>
+    <button class="wolfram-gen-btn" id="wf-gen-btn" onclick="agentGenProblem()">
+      ⚡ ${isKo?'Claude AI로 문제 생성':'Generate with Claude AI'}
+    </button>
+  </div>
+
+  <div class="wolfram-result ${prob?'show':''}" id="wf-result">
+    ${prob ? agentRenderProblemCard(prob) : ''}
+  </div>
+
+  <div id="wf-answer-section" style="display:${prob?'block':'none'}">
+    <div style="display:flex;gap:8px;margin-bottom:10px;">
+      <input class="agent-input" id="wf-user-ans" type="number" placeholder="${isKo?'답을 입력하세요…':'Your answer…'}" inputmode="numeric"
+        onkeydown="if(event.key==='Enter')agentCheckWfAnswer()" style="font-size:20px;font-weight:800;text-align:center;"/>
+      <button class="agent-send-btn" onclick="agentCheckWfAnswer()">✓</button>
+    </div>
+    <div id="wf-feedback" style="display:none;" class="math-feedback idle"></div>
+    <div id="wf-step-solution" style="display:none;" class="wolfram-result show" style="margin-top:8px;"></div>
+  </div>
+  `;
+}
+
+function agentRenderProblemCard(prob) {
+  return `
+  <div class="wolfram-result-title">📝 ${prob.topic} — ${prob.grade}</div>
+  <div class="wolfram-result-body">${escapeHTML(prob.question)}</div>
+  ${prob.hint ? `<div class="wolfram-result-step">💡 Hint: ${escapeHTML(prob.hint)}</div>` : ''}
+  `;
+}
+
+async function agentGenProblem() {
+  const grade = document.getElementById('wf-grade')?.value || agentState.mathGrade;
+  const topic = document.getElementById('wf-topic')?.value || agentState.mathTopic;
+  agentState.mathGrade = grade; agentState.mathTopic = topic;
+
+  const btn = document.getElementById('wf-gen-btn');
+  if(btn){ btn.disabled=true; btn.textContent= currentLang==='ko' ? '⏳ 생성 중…' : '⏳ Generating…'; }
+
+  // Build a Wolfram query that generates AND solves a problem, then we present the question
+  const prob = await buildWolframProblem(grade, topic);
+  agentState.genProblem = prob;
+
+  // Reset answer section
+  const wfFb = document.getElementById('wf-feedback');
+  const wfStep = document.getElementById('wf-step-solution');
+  const wfAns = document.getElementById('wf-user-ans');
+  if(wfFb){wfFb.style.display='none';}
+  if(wfStep){wfStep.style.display='none';}
+  if(wfAns){wfAns.value='';}
+
+  const resultEl = document.getElementById('wf-result');
+  if(resultEl){ resultEl.className='wolfram-result show'; resultEl.innerHTML=agentRenderProblemCard(prob); }
+  const ansSection = document.getElementById('wf-answer-section');
+  if(ansSection) ansSection.style.display='block';
+
+  if(btn){ btn.disabled=false; btn.textContent= currentLang==='ko' ? '⚡ Claude AI로 문제 생성' : '⚡ Generate with Claude AI'; }
+}
+
+async function buildWolframProblem(grade, topic) {
+  // Generate numbers based on grade
+  const ranges = {
+    grade1:{ add:[1,20], sub:[1,20], mul:[1,5], div:[1,5] },
+    grade2:{ add:[10,99], sub:[10,99], mul:[2,9], div:[2,9] },
+    grade3:{ add:[100,500], sub:[100,500], mul:[10,30], div:[2,12] },
+  };
+  const rng = ranges[grade] || ranges.grade1;
+
+  let question='', answer=0, hint='', wolframQ='', actualTopic=topic;
+
+  if(topic==='mixed') {
+    const ops=['+','-','×','÷'];
+    actualTopic = ['addition','subtraction','multiplication','division'][Math.floor(Math.random()*4)];
+  }
+
+  const ri=(lo,hi)=>lo+Math.floor(Math.random()*(hi-lo+1));
+
+  if(actualTopic==='addition'||topic==='addition') {
+    const a=ri(...rng.add), b=ri(...rng.add);
+    question=`What is ${a} + ${b}?`; answer=a+b;
+    hint=`Try counting up from ${a} by ${b}.`; wolframQ=`${a}+${b}`;
+  } else if(actualTopic==='subtraction'||topic==='subtraction') {
+    let a=ri(...rng.sub), b=ri(1,a);
+    question=`What is ${a} − ${b}?`; answer=a-b;
+    hint=`Start at ${a} and count down ${b}.`; wolframQ=`${a}-${b}`;
+  } else if(actualTopic==='multiplication'||topic==='multiplication') {
+    const a=ri(...rng.mul), b=ri(...rng.mul);
+    question=`What is ${a} × ${b}?`; answer=a*b;
+    hint=`Add ${a} a total of ${b} times.`; wolframQ=`${a}*${b}`;
+  } else if(actualTopic==='division'||topic==='division') {
+    const b=ri(...rng.div); const ans=ri(1,10); const a=b*ans;
+    question=`What is ${a} ÷ ${b}?`; answer=ans;
+    hint=`How many times does ${b} go into ${a}?`; wolframQ=`${a}/${b}`;
+  } else if(topic==='fractions') {
+    const dens=[2,3,4,5]; const d=dens[Math.floor(Math.random()*dens.length)];
+    const n1=ri(1,d-1), n2=ri(1,d-1);
+    const sum = n1+n2; const display = sum>=d ? `${Math.floor(sum/d)} and ${sum%d}/${d}` : `${sum}/${d}`;
+    question=`What is ${n1}/${d} + ${n2}/${d}?`; answer=sum; // stored as numerator for checking
+    hint=`Add the numerators: ${n1} + ${n2}, keep the denominator ${d}.`;
+    wolframQ=`${n1}/${d}+${n2}/${d}`;
+  } else if(topic==='word_problem') {
+    const a=ri(2,15), b=ri(2,15);
+    const scenarios=[
+      {q:`Sam has ${a} apples. He gets ${b} more. How many apples does Sam have now?`, ans:a+b, wq:`${a}+${b}`},
+      {q:`There are ${a*b} students in ${a} equal groups. How many students are in each group?`, ans:b, wq:`${a*b}/${a}`},
+      {q:`Lily has ${a+b} stickers and gives away ${b}. How many does she have left?`, ans:a, wq:`${a+b}-${b}`},
+    ];
+    const sc = scenarios[Math.floor(Math.random()*scenarios.length)];
+    question=sc.q; answer=sc.ans; wolframQ=sc.wq;
+    hint='Read carefully and choose the right operation!';
+  }
+
+  // Try to get Wolfram to verify / provide step-by-step
+  let steps = [];
+  const wfResult = await wolframQuery(wolframQ);
+  if(wfResult && wfResult.steps) steps = wfResult.steps;
+
+  return { question, answer, hint, grade, topic, wolframQ, steps };
+}
+
+async function agentCheckWfAnswer() {
+  const prob = agentState.genProblem;
+  if(!prob) return;
+  const inp = document.getElementById('wf-user-ans');
+  const val = parseFloat(inp?.value);
+  if(isNaN(val)) return;
+
+  const fb = document.getElementById('wf-feedback');
+  const stepDiv = document.getElementById('wf-step-solution');
+  if(!fb || !stepDiv) return;
+
+  fb.style.display='flex';
+  const isKo = currentLang === 'ko';
+
+  const isCorrect = Math.abs(val - prob.answer) < 0.01;
+  if(isCorrect) {
+    fb.className='math-feedback correct';
+    fb.innerHTML = isKo ? '🎉 정답이에요! 잘했어요!' : '🎉 Correct! Great job!';
+    launchMiniConfetti();
+    state.xp+=15; state.coins+=5; updateHeader();
+    stepDiv.style.display='none';
+  } else {
+    fb.className='math-feedback wrong';
+    fb.innerHTML = isKo
+      ? `❌ 틀렸어요. 정답은 <b>${prob.answer}</b>이에요. 왜 그런지 알아볼까요?`
+      : `❌ Not quite. The answer is <b>${prob.answer}</b>. Let's see why:`;
+
+    stepDiv.style.display='block';
+    const loadingMsg = isKo ? 'Claude AI가 풀이를 설명하는 중…' : 'Claude AI is explaining the solution…';
+    stepDiv.innerHTML=`<div class="wolfram-result-title">📐 ${isKo?'풀이 설명':'Step-by-step solution'}</div><div class="wolfram-result-step">${loadingMsg}</div>`;
+
+    // Try Claude AI explanation first
+    const explainPrompt = isKo
+      ? `수학 문제: "${prob.question}" 정답은 ${prob.answer}입니다. 초등학생이 이해할 수 있게 한국어로 풀이 과정을 단계별로 설명해 주세요.`
+      : `Math problem: "${prob.question}" The answer is ${prob.answer}. Explain the solution step by step for an elementary school kid.`;
+
+    const claudeExplain = await callClaudeAPI([{role:'user', content: explainPrompt}]);
+
+    if(claudeExplain) {
+      stepDiv.innerHTML=`<div class="wolfram-result-title">📐 ${isKo?'Claude AI 풀이':'Claude AI Solution'}</div>
+        <div class="wolfram-result-step">${claudeTextToHTML(claudeExplain)}</div>
+        <div style="margin-top:8px;font-size:11px;color:#9CA3AF;">✨ Claude AI</div>`;
+    } else {
+      // Fallback to Wolfram
+      const wfFull = await wolframQuery(prob.wolframQ, true);
+      if(wfFull && wfFull.steps && wfFull.steps.length) {
+        stepDiv.innerHTML=`<div class="wolfram-result-title">📐 ${isKo?'풀이':'Step-by-step solution'}</div>
+          <div class="wolfram-result-step">${wfFull.steps.map(s=>`• ${escapeHTML(s)}`).join('<br>')}</div>`;
+      } else {
+        stepDiv.innerHTML=`<div class="wolfram-result-title">📐 ${isKo?'풀이':'Solution'}</div>
+          <div class="wolfram-result-step">${escapeHTML(prob.question)}<br><b>${isKo?'정답':'Answer'}: ${prob.answer}</b><br>${escapeHTML(prob.hint||'')}</div>`;
+      }
+    }
+  }
+}
+
+// ── ENGLISH MODE ──────────────────────────────────────────────
+function agentRenderEnglish() {
+  const chips = t('englishChips');
+  return `
+  <div class="wolfram-badge">✨ Claude AI + Wolfram|Alpha Powered</div>
+
+  <div class="english-section">
+    <div class="english-section-title">${currentLang==='ko'?'📖 영어 단어나 문장에 대해 무엇이든 물어보세요':'📖 Ask about any English word or sentence'}</div>
+    <div class="agent-chips">
+      ${chips.map(c=>`<button class="agent-chip" onclick="agentEnglishChip('${c.replace(/'/g,"\\'")}')"><span>${c}</span></button>`).join('')}
+    </div>
+    <input class="english-check-input" id="english-input" 
+      placeholder="${currentLang==='ko'?'예: "spell: necessary" 또는 "define: curiosity"':'e.g. "Spell necessary" or "Define curiosity"'}"
+      onkeydown="if(event.key==='Enter')agentEnglishSend()"/>
+    <button class="english-check-btn" onclick="agentEnglishSend()">
+      ${currentLang==='ko'?'🔍 AI에게 물어보기':'🔍 Ask Claude AI'}
+    </button>
+  </div>
+
+  <div id="english-result-box"></div>
+
+  <div class="english-section">
+    <div class="english-section-title">${currentLang==='ko'?'✍️ 문법 검사기':'✍️ Grammar Checker'}</div>
+    <input class="english-check-input" id="grammar-input" 
+      placeholder="${currentLang==='ko'?'문장을 입력하세요…':'Type a sentence to check…'}"
+      onkeydown="if(event.key==='Enter')agentGrammarCheck()"/>
+    <button class="english-check-btn" onclick="agentGrammarCheck()" style="background:linear-gradient(135deg,var(--orange),#F59E0B);">
+      ${currentLang==='ko'?'✅ 문법 검사':'✅ Check Grammar'}
+    </button>
+    <div id="grammar-result-box" style="margin-top:10px;"></div>
+  </div>
+  `;
+}
+
+function agentEnglishChip(text) {
+  const inp = document.getElementById('english-input');
+  if(inp) inp.value = text;
+  agentEnglishSend();
+}
+
+async function agentEnglishSend() {
+  const inp = document.getElementById('english-input');
+  const q = inp?.value.trim();
+  if(!q) return;
+
+  const box = document.getElementById('english-result-box');
+  if(!box) return;
+  const loadingMsg = currentLang==='ko' ? 'Claude AI가 검색 중…' : 'Claude AI is looking up…';
+  box.innerHTML=`<div class="wolfram-result show"><div class="wolfram-result-title">🔍 ${loadingMsg}</div><div class="wolfram-result-step"><span class="math-spinner" style="border-top-color:#6366F1;"></span></div></div>`;
+
+  // Build a prompt for Claude
+  const prompt = currentLang==='ko'
+    ? `다음 영어 관련 질문에 어린이가 이해할 수 있도록 한국어로 설명해 주세요: "${q}". 철자, 정의, 동의어, 반의어, 문법 등 질문에 맞게 답해 주세요.`
+    : `Answer this English language question for a kid: "${q}". If it's about spelling, show each letter. If definition, give a simple kid-friendly explanation with an example sentence.`;
+
+  let html = '';
+  const claudeResp = await callClaudeAPI([{role:'user', content: prompt}]);
+
+  if(claudeResp) {
+    html=`<div class="wolfram-result show">
+      <div class="wolfram-result-title">📖 "${escapeHTML(q)}"</div>
+      <div class="wolfram-result-body">${claudeTextToHTML(claudeResp)}</div>
+      <div style="margin-top:8px;font-size:11px;color:#9CA3AF;">✨ Claude AI</div>
+    </div>`;
+  } else {
+    // Fallback to Wolfram
+    const result = await wolframQuery(q);
+    if(result && result.answer) {
+      html=`<div class="wolfram-result show">
+        <div class="wolfram-result-title">📖 "${escapeHTML(q)}"</div>
+        <div class="wolfram-result-body">${escapeHTML(result.answer)}</div>
+        ${result.steps ? `<div class="wolfram-result-step">${result.steps.map(s=>escapeHTML(s)).join('<br>')}</div>` : ''}
+      </div>`;
+    } else {
+      html = `<div class="wolfram-result show">
+        <div class="wolfram-result-title">📖 Result</div>
+        <div class="wolfram-result-body">${localEnglishAnswer(q)}</div>
+      </div>`;
+    }
+  }
+  box.innerHTML=html;
+  state.xp+=5; updateHeader();
+}
+
+function localEnglishAnswer(q) {
+  const ql=q.toLowerCase();
+  if(ql.startsWith('spell')) {
+    const w=q.replace(/spell\s*:?\s*/i,'').trim();
+    return `The word <b>"${escapeHTML(w)}"</b> is spelled: <code>${escapeHTML(w.toLowerCase())}</code><br>
+      Letters: <code>${w.toLowerCase().split('').join(' - ')}</code>`;
+  }
+  if(ql.startsWith('define') || ql.startsWith('what does')) {
+    const w=q.replace(/define\s*:?\s*|what does\s*/i,'').replace(/\s*mean.*/i,'').trim();
+    return `Wolfram|Alpha couldn't be reached. Try: <b>"define ${escapeHTML(w)}"</b> when online, or check a dictionary! 📚`;
+  }
+  if(ql.includes('synonym')) {
+    const w=q.replace(/synonym\s*of\s*/i,'').trim();
+    return `Looking for synonyms of <b>"${escapeHTML(w)}"</b> — requires Wolfram|Alpha connection. Try again in a moment! 🔄`;
+  }
+  if(ql.includes('antonym')) {
+    const w=q.replace(/antonym\s*of\s*/i,'').trim();
+    return `Looking for antonyms of <b>"${escapeHTML(w)}"</b> — requires Wolfram|Alpha connection. Try again in a moment! 🔄`;
+  }
+  return `I searched for <b>"${escapeHTML(q)}"</b>. Wolfram|Alpha is offline right now. Try again in a moment! 🔄`;
+}
+
+async function agentGrammarCheck() {
+  const inp = document.getElementById('grammar-input');
+  const q = inp?.value.trim();
+  if(!q) return;
+
+  const box = document.getElementById('grammar-result-box');
+  if(!box) return;
+  const loadingMsg = currentLang==='ko' ? 'Claude AI가 문법을 검사 중…' : 'Claude AI is checking grammar…';
+  box.innerHTML=`<div class="wolfram-result show"><div class="wolfram-result-step"><span class="math-spinner" style="border-top-color:#F97316;"></span> ${loadingMsg}</div></div>`;
+
+  const prompt = currentLang==='ko'
+    ? `다음 영어 문장의 문법을 검사하고 한국어로 설명해 주세요: "${q}". 틀린 부분이 있으면 올바른 형태를 보여주고 이유를 설명해 주세요. 맞으면 잘 썼다고 칭찬해 주세요.`
+    : `Check the grammar of this sentence for a kid: "${q}". Point out any errors, show the corrected version, and explain why in simple terms. If it's correct, say so with encouragement!`;
+
+  let html = '';
+  const claudeResp = await callClaudeAPI([{role:'user', content: prompt}]);
+
+  if(claudeResp) {
+    html=`<div class="wolfram-result show">
+      <div class="wolfram-result-title">${currentLang==='ko'?'✅ 문법 검사 결과':'✅ Grammar Check'}</div>
+      <div class="wolfram-result-body">${claudeTextToHTML(claudeResp)}</div>
+      <div style="margin-top:8px;font-size:11px;color:#9CA3AF;">✨ Claude AI</div>
+    </div>`;
+  } else {
+    html=`<div class="wolfram-result show">
+      <div class="wolfram-result-title">✅ Grammar Check (Local)</div>
+      <div class="wolfram-result-body">${localGrammarCheck(q)}</div>
+    </div>`;
+  }
+  box.innerHTML=html;
+}
+
+function localGrammarCheck(sentence) {
+  const rules=[
+    [/\b(she|he|it)\s+go\b/i,'Subject-verb agreement: use <b>"goes"</b> instead of "go" after she/he/it'],
+    [/\b(i)\s+am\b/i,null],// correct, skip
+    [/\ba\s+[aeiou]/i,'Article: use <b>"an"</b> before vowel sounds (a, e, i, o, u)'],
+    [/\bthey\s+is\b/i,'Subject-verb agreement: use <b>"are"</b> instead of "is" after "they"'],
+    [/\bwe\s+was\b/i,'Subject-verb agreement: use <b>"were"</b> instead of "was" after "we"'],
+    [/\bi\s+has\b/i,'Subject-verb agreement: use <b>"have"</b> instead of "has" after "I"'],
+  ];
+  const issues=[];
+  for(const [pat,msg] of rules){
+    if(msg && pat.test(sentence)) issues.push(msg);
+  }
+  if(!issues.length) return `✅ "<i>${escapeHTML(sentence)}</i>" — looks good! (Full check needs Wolfram|Alpha online)`;
+  return `⚠️ Found ${issues.length} issue(s):<br>`+issues.map(i=>`• ${i}`).join('<br>');
+}
+
+function escapeHTML(s){
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+</script>
+</body>
+</html>
